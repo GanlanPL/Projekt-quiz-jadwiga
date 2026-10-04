@@ -80,7 +80,7 @@
                 Czy aby nie jesteś mugolem?
             </h1>
             <p class="font-serif italic text-lg md:text-xl text-gray-400 mt-1 max-w-xl">
-                Tajemnicza próba wiedzy dla czarownic rocznika '89. Rozwiąż zagadki, by odkryć co kryje cionek nocy.
+                Tajemnicza próba wiedzy dla czarownic rocznika '89. Rozwiąż zagadki postaci, by odkryć co kryje cień nocy.
             </p>
         </div>
     </header>
@@ -159,9 +159,9 @@
         <!-- RIGHT COLUMN: Days Navigation & Quiz Interface -->
         <section class="lg:col-span-7 flex flex-col gap-6">
             
-            <!-- Days Tabs -->
-            <div class="flex flex-wrap gap-2 p-1.5 bg-slytherin-dark rounded-xl border border-slytherin-border" id="days-tabs">
-                <!-- Javascript will inject tabs here -->
+            <!-- Character Cards Tabs -->
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 p-1.5 bg-slytherin-dark rounded-xl border border-slytherin-border" id="days-tabs">
+                <!-- Javascript will inject character cards here -->
             </div>
 
             <!-- Quiz Card -->
@@ -241,140 +241,150 @@
         const DEFAULT_IMAGE = 'selfie.png';
         let currentImageUrl = DEFAULT_IMAGE;
 
-        // Quiz Questions Data (5 Days, 4 questions per day)
+        // Quiz Questions Data (5 Characters in exact sequence)
         const QUIZ_DATA = [
             {
                 day: 1,
-                title: "Dzień I: Korytarze Hogwartu",
-                tileIndex: 1, // Unlock bottom tile 1
+                character: "Hagrid",
+                subtitle: "Klucznik i Strażnik Kniei",
+                icon: "🏕️",
+                tileIndex: 1,
                 questions: [
                     {
-                        q: "Który z domów szczyci się sprytem, braterstwem i ambicją?",
-                        options: ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff"],
-                        correct: 1
-                    },
-                    {
-                        q: "Jak brzmi zaklęcie otwierające większość magicznych zamków?",
-                        options: ["Alohomora", "Colloportus", "Aparecium", "Reducto"],
+                        q: "Jak wabi się ukochany, choć niezbyt odważny pies Hagrida?",
+                        options: ["Kieł", "Puszek", "Bober", "Hardodziob"],
                         correct: 0
                     },
                     {
-                        q: "Ile wynosi numer peronu, z którego odjeżdża Hogwarts Express?",
-                        options: ["9", "9 i 1/2", "9 i 3/4", "10"],
-                        correct: 2
+                        q: "W czym Rubeus Hagrid ukrył złamane kawałki swojej dawnej różdżki?",
+                        options: ["W skórzanej torbie", "W różowej parasolce", "W pniu starego dębu", "W kieszeni płaszcza"],
+                        correct: 1
                     },
                     {
-                        q: "Kto był opiekunem Domu Slytherina na początku nauki Harry'ego?",
-                        options: ["Horacy Slughorn", "Severus Snape", "Minerva McGonagall", "Filius Flitwick"],
+                        q: "Jakie stworzenie wykluło się z jaja, które Hagrid wygrał w karty w Świńskim Łbie?",
+                        options: ["Hipogryf", "Smok (Norbert)", "Aromantula", "Testral"],
+                        correct: 1
+                    },
+                    {
+                        q: "Kim była matka Hagrida?",
+                        options: ["Czarownicą czystej krwi", "Olbrzymką o imieniu Fridwulfa", "Wilkołakiem", "Kobieciarką z wioski"],
                         correct: 1
                     }
                 ]
             },
             {
                 day: 2,
-                title: "Dzień II: Zakazany Las & Eliksiry",
-                tileIndex: 2, // Unlock tile 2
+                character: "Harry",
+                subtitle: "Chłopiec, Który Przeżył",
+                icon: "⚡",
+                tileIndex: 2,
                 questions: [
                     {
-                        q: "Składnikiem Eliksiru Wielosokowego NIE jest:",
-                        options: ["Róg dwurożca", "Skóra ślizgacza", "Włos osoby, w którą się zmieniamy", "Łza feniksa"],
-                        correct: 3
-                    },
-                    {
-                        q: "Jak nazywa się hipogryf należący do Hagrida?",
-                        options: ["Aramis", "Kieł", "Hardodziob", "Norbert"],
+                        q: "Jaka postać przyjmuje Patronus Harry'ego Pottera?",
+                        options: ["Wilk", "Swojski Pies", "Jeleń", "Feniks"],
                         correct: 2
                     },
                     {
-                        q: "Co trzeba zrobić, by uspokoić Puszka (trójgłowego psa)?",
-                        options: ["Zagrać muzykę", "Rzucić mu mięso", "Klasnąć trzy razy", "Wypowiedzieć 'Silencio'"],
-                        correct: 0
+                        q: "Od kogo Harry otrzymał w tajemnicy najszybszą miotłę – Błyskawicę?",
+                        options: ["Od Albusa Dumbledore'a", "Od Remusa Lupina", "Od Syriusza Blacka", "Od Minervy McGonagall"],
+                        correct: 2
                     },
                     {
-                        q: "Jakie stworzenie strzeże krypt w Banku Gringotta?",
-                        options: ["Troll", "Smok", "Banshee", "Aromantula"],
+                        q: "Na jakiej pozycji grał Harry w reprezentacji Quidditcha Gryffindoru?",
+                        options: ["Ścigający", "Szukający", "Pałkarz", "Obrońca"],
                         correct: 1
+                    },
+                    {
+                        q: "Jakie stworzenie było pierwszym horkruksem stworzonym nieświadomie przez Voldemorta?",
+                        options: ["Nagini", "Puchar Hufflepuff", "Sam Harry", "Diadem Ravenclaw"],
+                        correct: 2
                     }
                 ]
             },
             {
                 day: 3,
-                title: "Dzień III: Mroczne Sztuki i Artefakty",
-                tileIndex: 3, // Unlock tile 3
+                character: "Snape",
+                subtitle: "Książę Półkrwi",
+                icon: "🧪",
+                tileIndex: 3,
                 questions: [
                     {
-                        q: "Który przedmiot NIE jest jednym z Insygniów Śmierci?",
-                        options: ["Czarna Różdżka", "Kamień Wskrzeszenia", "Przylądek Niewidka", "Złoty Znicz"],
-                        correct: 3
-                    },
-                    {
-                        q: "Formą Bogina dla Remusa Lupina jest:",
-                        options: ["Pełnia Księżyca", "Srebrny Sztylet", "Złowrogi Cień", "Wąż"],
+                        q: "Jakie jest jedno z najsłynniejszych słów Severusa Snape'a wyrażające miłość do Lily?",
+                        options: ["Zawsze (Always)", "Nigdy", "Na wieki", "Pamiętam"],
                         correct: 0
                     },
                     {
-                        q: "Gdzie znajduje się pokój, w którym ukryto Horkruks Diadem?",
-                        options: ["W Lochach", "W Pokoju Życzeń", "W Wieży Astronomicznej", "W Gabinecie Dumbledore'a"],
+                        q: "Pod jakim pseudonimem Severus zapisywał swoje ulepszone receptury eliksirów w podręczniku?",
+                        options: ["Czarny Mistrz", "Książę Półkrwi", "Mroczny Alchemik", "Srebrny Wąż"],
                         correct: 1
                     },
                     {
-                        q: "Zaklęcie 'Sectumsempra' zostało stworzone przez:",
-                        options: ["Tom Marvolo Riddle", "Księcia Półkrwi", "Gellerta Grindelwalda", "Luciusa Malfoya"],
-                        correct: 1
+                        q: "Jakie mroczne zaklęcie tnące zostało wymyślone bezpośrednio przez Snape'a?",
+                        options: ["Sectumsempra", "Avada Kedavra", "Crucio", "Expelliarmus"],
+                        correct: 0
+                    },
+                    {
+                        q: "Jakiej sztuki magicznej Snape uczył Harry'ego, by chronić jego umysł przed Voldemortem?",
+                        options: ["Oklumencji", "Legilimencji", "Transmutacji", "Astromancji"],
+                        correct: 0
                     }
                 ]
             },
             {
                 day: 4,
-                title: "Dzień IV: Tajemnica Twarzy (Głowa cz. I)",
-                tileIndex: 4, // Unlock tile 4 (Face area)
+                character: "Hermiona",
+                subtitle: "Najwybitniejsza Czarownica",
+                icon: "📚",
+                tileIndex: 4,
                 questions: [
                     {
-                        q: "Jaki patronus należał do Severusa Snape'a?",
-                        options: ["Łania", "Jeleń", "Pies", "Sowa"],
+                        q: "Jakiego magicznego przedmiotu używała Hermiona na 3. roku, by uczęszczać na wszystkie zajęcia?",
+                        options: ["Zmieniacza Czasu", "Zwierciadła Ain Eingarp", "Mapy Huncwotów", "Peleryny Niewidki"],
                         correct: 0
                     },
                     {
-                        q: "Co oznacza skrót N.O.W.T. (Owutemy)?",
-                        options: ["Okropnie Wyczerpujące Testy Magiczne", "Ostateczny Wyzysk Twórczy", "Okropnie Wybitne Testy Tajemne", "Ogólne Warsztaty Tworzenia Zaklęć"],
+                        q: "Jak nazywa się rudy, sprytny kot Hermiony o spłaszczonym pyszczku?",
+                        options: ["Puszek", "Krzywołap", "Norbert", "Kieł"],
+                        correct: 1
+                    },
+                    {
+                        q: "Jaką organizację założyła Hermiona w walce o prawa skrzatów domowych?",
+                        options: ["W.S.P.Ó.Ł.", "S.O.W.T. (SPEW)", "G.A.D.", "Z.O.R.A."],
+                        correct: 1
+                    },
+                    {
+                        q: "Co Hermiona ujrzała w Eliksirze Amortencja (zapach miłości)?",
+                        options: ["Świeżo ściętą trawę, nowy pergamin i włosy Rona", "Zapach czekolady i starej biblioteki", "Zapach prochu i dymu", "Zielone jabłka i zapach deszczu"],
                         correct: 0
-                    },
-                    {
-                        q: "Gdzie mieści się kwatera główna Zakonu Feniksa?",
-                        options: ["Dolina Godryka 12", "Grimmauld Place 12", "Ulica Pokątna 4", "Privet Drive 4"],
-                        correct: 1
-                    },
-                    {
-                        q: "Jaki napis widnieje na Zwierciadle Ain Eingarp czytany od tyłu?",
-                        options: ["I desire not your face", "I show not your face but your heart's desire", "Secrets lie within", "Magic reveals all"],
-                        correct: 1
                     }
                 ]
             },
             {
                 day: 5,
-                title: "Dzień V: Finałowe Odsłonięcie (Głowa cz. II)",
-                tileIndex: 5, // Unlock tile 5 (Full Head)
+                character: "Dumbledore",
+                subtitle: "Dyrektor Hogwartu",
+                icon: "🔮",
+                tileIndex: 5,
                 questions: [
                     {
-                        q: "Jaki jest główny rdzeń w różdżce Lorda Voldemorta?",
-                        options: ["Włos z ogona jednorożca", "Pióro feniksa", "Włókno ze smoczego serca", "Włos z głowy wili"],
+                        q: "Jak wabi się wierny feniks Albusa Dumbledore'a?",
+                        options: ["Aramis", "Fawkes", "Errol", "Hedwiga"],
                         correct: 1
                     },
                     {
-                        q: "Jakie słowa kończą działanie Mapy Huncwotów?",
-                        options: ["Koniec psot", "Uroczysto przysięgam", "Mroki ustąpcie", "Nox"],
+                        q: "Którą z Insygniów Śmierci Dumbledore zdobył po pojedynku z Grindelwaldem?",
+                        options: ["Kamień Wskrzeszenia", "Czarną Różdżkę", "Przylądek Niewidkę", "Złoty Znicz"],
+                        correct: 1
+                    },
+                    {
+                        q: "Jaki był ulubiony mugolski przysmak Dumbledore'a, stanowiący też hasło do jego gabinetu?",
+                        options: ["Czekoladowe Żaby", "Cytrynki (Kwaśne cytrynki)", "Kociołkowe pieczywo", "Fasolki wszystkich smaków"],
+                        correct: 1
+                    },
+                    {
+                        q: "Co wedle kart z Czekoladowych Żab uchodzi za jedno z najważniejszych odkryć Dumbledore'a?",
+                        options: ["12 zastosowań smoczej krwi", "Wynalezienie Eliksiru Życia", "Odkrycie komety Halleya", "Stworzenie Kamienia Filozoficznego"],
                         correct: 0
-                    },
-                    {
-                        q: "Który horkruks został zniszczony mieczem Gryffindora przez Rona?",
-                        options: ["Pierścień Gaunta", "Medalion Slytherina", "Czara Hufflepuff", "Wąż Nagini"],
-                        correct: 1
-                    },
-                    {
-                        q: "Czy po rozwiązaniu tych 5 etapów uznajesz, że NIE jesteś mugolem?",
-                        options: ["Absolutnie nie jestem!", "Zdecydowanie jestem czarownicą!", "Zawsze miałam różdżkę w kieszeni", "Wszystkie odpowiedzi są poprawne"],
-                        correct: 3
                     }
                 ]
             }
@@ -384,38 +394,12 @@
         let state = {
             currentDay: 1,
             currentQuestionIdx: 0,
-            answers: {}, // Key format: "day_qIdx": selectedAnswerIndex
-            unlockedDays: [1], // Day 1 always unlocked initially
-            passedDays: [] // Days where >= 2 questions answered correctly
+            answers: {},
+            unlockedDays: [1],
+            passedDays: []
         };
 
-        // Initialize App
-        window.onload = function() {
-            loadState();
-            updateImagePuzzleSources();
-            renderDaysTabs();
-            renderQuestion();
-            updatePuzzleDisplay();
-        };
-
-        // Load State from LocalStorage
-        function loadState() {
-            const saved = localStorage.getItem('hp_birthday_quest_state_v2');
-            if (saved) {
-                try {
-                    state = JSON.parse(saved);
-                } catch(e) {
-                    console.error("Failed to parse saved state", e);
-                }
-            }
-        }
-
-        // Save State
-        function saveState() {
-            localStorage.setItem('hp_birthday_quest_state_v2', JSON.stringify(state));
-        }
-
-        // Render Navigation Tabs for Days
+        // Render Navigation Cards for Characters
         function renderDaysTabs() {
             const tabsContainer = document.getElementById('days-tabs');
             tabsContainer.innerHTML = '';
@@ -426,16 +410,25 @@
                 const isActive = state.currentDay === d.day;
 
                 const btn = document.createElement('button');
-                btn.className = `flex-1 py-2 px-3 rounded-lg font-header text-xs transition duration-200 flex items-center justify-center gap-1.5 min-w-[100px] ${
+                btn.className = `p-2 rounded-lg font-serif text-left transition duration-200 flex flex-col justify-between ${
                     isActive 
-                        ? 'bg-slytherin-emerald text-slytherin-dark font-bold shadow-lg' 
+                        ? 'bg-slytherin-emerald text-slytherin-dark font-bold shadow-lg ring-1 ring-emerald-300' 
                         : isUnlocked 
                             ? 'bg-slytherin-card hover:bg-slytherin-accent text-gray-300 border border-slytherin-border' 
-                            : 'bg-slytherin-dark/40 text-gray-600 border border-slytherin-border/30 cursor-not-allowed'
+                            : 'bg-slytherin-dark/40 text-gray-600 border border-slytherin-border/30 cursor-not-allowed opacity-60'
                 }`;
 
                 let statusIcon = isPassed ? '✓' : isUnlocked ? '📖' : '🔒';
-                btn.innerHTML = `<span>Etap ${d.day}</span> <span class="text-[10px] opacity-80">${statusIcon}</span>`;
+                btn.innerHTML = `
+                    <div class="flex items-center justify-between w-full mb-1">
+                        <span class="text-base">${d.icon}</span>
+                        <span class="text-[10px] font-sans px-1.5 py-0.5 rounded ${isPassed ? 'bg-emerald-900/80 text-emerald-200' : 'bg-black/40 text-gray-400'}">${statusIcon}</span>
+                    </div>
+                    <div>
+                        <div class="text-xs font-bold leading-tight">${d.character}</div>
+                        <div class="text-[9px] opacity-75 font-sans">Etap ${d.day}</div>
+                    </div>
+                `;
                 
                 if (isUnlocked) {
                     btn.onclick = () => selectDay(d.day);
