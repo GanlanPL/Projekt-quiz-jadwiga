@@ -100,6 +100,17 @@
       border-radius: 4px;
       overflow: hidden;
       box-shadow: 0 0 15px rgba(0,0,0,0.8);
+      transition: transform 0.3s ease;
+    }
+
+    .puzzle-container.zoomable {
+      cursor: pointer;
+    }
+
+    .puzzle-container.zoomable:hover {
+      transform: scale(1.03);
+      border-color: var(--gold-light);
+      box-shadow: 0 0 25px rgba(197, 160, 89, 0.4);
     }
 
     .secret-img {
@@ -295,6 +306,28 @@
     .quiz-result { text-align: center; padding: 20px 0; }
     .quiz-result h3 { color: var(--gold-light); margin-bottom: 10px; }
 
+    /* Modal powiększenia zdjęcia */
+    .image-modal-content {
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .full-image {
+      max-width: 100%;
+      max-height: 85vh;
+      border: 3px solid var(--gold-light);
+      border-radius: 8px;
+      box-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
+      object-fit: contain;
+    }
+
     .dev-panel {
       margin-top: 40px;
       padding: 15px;
@@ -320,15 +353,15 @@
 
   <div class="main-container">
     <div class="puzzle-section">
-      <div class="puzzle-title">Odkryty Wizerunek</div>
-      <div class="puzzle-container">
-        <img id="secretImage" class="secret-img" src="selfie.png" alt="Obraz Tajemnica">
+      <div class="puzzle-title" id="puzzleTitle">Odkryty Wizerunek</div>
+      <div class="puzzle-container" id="puzzleContainer">
+        <img id="secretImage" class="secret-img" src="https://i.imgur.com/auMyZ06.jpeg" alt="Obraz Tajemnica">
         <div class="puzzle-grid">
-          <div class="puzzle-piece" id="piece-0" data-index="1"></div>
-          <div class="puzzle-piece" id="piece-1" data-index="2"></div>
-          <div class="puzzle-piece" id="piece-2" data-index="3"></div>
-          <div class="puzzle-piece" id="piece-3" data-index="4"></div>
           <div class="puzzle-piece" id="piece-4" data-index="5"></div>
+          <div class="puzzle-piece" id="piece-3" data-index="4"></div>
+          <div class="puzzle-piece" id="piece-2" data-index="3"></div>
+          <div class="puzzle-piece" id="piece-1" data-index="2"></div>
+          <div class="puzzle-piece" id="piece-0" data-index="1"></div>
         </div>
       </div>
     </div>
@@ -336,10 +369,19 @@
     <div class="menu-section" id="cardsList"></div>
   </div>
 
+  <!-- Modal do Quizu -->
   <div class="modal-overlay" id="quizModal">
     <div class="modal-content">
       <button class="close-btn" id="closeBtn">×</button>
       <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- Modal do powiększonego zdjęcia -->
+  <div class="modal-overlay" id="imageModal">
+    <div class="modal-content image-modal-content">
+      <button class="close-btn" id="closeImageBtn" style="color: #fff; font-size: 2rem;">×</button>
+      <img src="https://i.imgur.com/auMyZ06.jpeg" alt="Powiększone zdjęcie" class="full-image">
     </div>
   </div>
 
@@ -483,7 +525,30 @@
           piece.classList.remove('unlocked');
         }
       });
+
+      // Obsługa powiększania zdjęcia po ukończeniu wszystkich etapów
+      const allCompleted = userState.completed.length === CHARACTERS.length;
+      const puzzleContainer = document.getElementById('puzzleContainer');
+      const puzzleTitle = document.getElementById('puzzleTitle');
+
+      if (allCompleted) {
+        puzzleContainer.classList.add('zoomable');
+        puzzleTitle.innerText = "🔍 Odkryty Wizerunek (Kliknij, aby powiększyć)";
+        puzzleContainer.onclick = openImageModal;
+      } else {
+        puzzleContainer.classList.remove('zoomable');
+        puzzleTitle.innerText = "Odkryty Wizerunek";
+        puzzleContainer.onclick = null;
+      }
     }
+
+    function openImageModal() {
+      document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    document.getElementById('closeImageBtn').onclick = () => {
+      document.getElementById('imageModal').style.display = 'none';
+    };
 
     let activeChar = null;
     let currentQ = 0;
