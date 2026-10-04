@@ -3,562 +3,690 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magiczna Niespodzianka Urodzinowa ⚡</title>
+    <title>Czy aby nie jesteś mugolem?</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts: Cinzel Decorative, Cormorant Garamond, Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        potter: {
-                            gold: '#d4af37',
-                            darkGold: '#aa820a',
-                            burgundy: '#740001',
-                            darkNavy: '#0a0d14',
-                            cardBg: 'rgba(22, 27, 38, 0.85)',
-                            goldGlow: 'rgba(212, 175, 55, 0.3)'
-                        }
-                    },
-                    fontFamily: {
-                        magic: ['Cinzel', 'serif'],
-                        sans: ['Montserrat', 'sans-serif']
-                    }
-                }
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              slytherin: {
+                dark: '#0a100d',
+                bg: '#0f1715',
+                card: '#14221e',
+                accent: '#1e3a34',
+                emerald: '#10b981',
+                gold: '#c5a059',
+                silver: '#a3b18a',
+                border: '#2a443b'
+              }
+            },
+            fontFamily: {
+              header: ['Cinzel Decorative', 'serif'],
+              serif: ['Cormorant Garamond', 'serif'],
+              sans: ['Inter', 'sans-serif'],
             }
+          }
         }
+      }
     </script>
+
     <style>
-        body {
-            background-color: #0a0d14;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(116, 0, 1, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 40%);
-            background-attachment: fixed;
-        }
+      body {
+        background-color: #070a09;
+        background-image: 
+          radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
+          radial-gradient(circle at 100% 100%, rgba(197, 160, 89, 0.05) 0%, transparent 50%);
+        color: #d1d5db;
+      }
 
-        .gold-border {
-            border: 1px solid rgba(212, 175, 55, 0.4);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
-        }
+      .text-glow {
+        text-shadow: 0 0 12px rgba(16, 185, 129, 0.3), 0 0 25px rgba(16, 185, 129, 0.1);
+      }
 
-        .gold-text-glow {
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
-        }
+      .text-gold-glow {
+        text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
+      }
 
-        .puzzle-overlay {
-            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+      .emerald-border-glow {
+        box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
+      }
 
-        .puzzle-overlay.unlocked {
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.9) rotate(2deg);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0d14;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #d4af37;
-            border-radius: 4px;
-        }
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0a100d;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e3a34;
+        border-radius: 3px;
+      }
     </style>
 </head>
-<body class="text-gray-200 font-sans min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+<body class="min-h-screen font-sans antialiased flex flex-col justify-between selection:bg-emerald-900 selection:text-emerald-200">
 
-    <header class="text-center my-4 sm:my-8">
-        <h1 class="font-magic text-3xl sm:text-5xl font-extrabold text-potter-gold gold-text-glow mb-2 tracking-wider">
-            ⚡ Magiczna Misja Urodzinowa ⚡
-        </h1>
-        <p class="text-sm sm:text-base text-gray-400 max-w-xl mx-auto italic font-light px-4">
-            Witaj w tajemniczym wyzwaniu! Rozwiązuj codzienne quizy wiedzy o świecie magii, aby stopniowo odkrywać ukryte zdjęcie niespodziankę.
-        </p>
+    <header class="w-full py-8 px-4 text-center border-b border-slytherin-border/40 bg-slytherin-dark/80 backdrop-blur-md sticky top-0 z-30">
+        <div class="max-w-4xl mx-auto flex flex-col items-center">
+            <span class="text-xs uppercase tracking-[0.3em] text-slytherin-emerald font-semibold mb-2">Nocturn Alley Edition</span>
+            <h1 class="font-header text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-200 to-amber-200 text-glow leading-relaxed py-1">
+                Czy aby nie jesteś mugolem?
+            </h1>
+            <p class="font-serif italic text-lg md:text-xl text-gray-400 mt-1 max-w-xl">
+                Tajemnicza próba wiedzy dla czarownic rocznika '89. Rozwiąż zagadki, by odkryć co kryje cionek nocy.
+            </p>
+        </div>
     </header>
 
-    <main class="max-w-5xl mx-auto w-full space-y-10">
+    <main class="max-w-6xl mx-auto px-4 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Section: Secret Photo Puzzle -->
-        <section class="bg-potter-cardBg p-4 sm:p-6 rounded-2xl gold-border backdrop-blur-md">
-            <div class="text-center mb-4">
-                <h2 class="font-magic text-xl sm:text-2xl text-potter-gold font-bold">Magiczne Zdjęcie Niespodzianka</h2>
-                <p class="text-xs sm:text-sm text-gray-400">Odkrywaj kolejne fragmenty zaliczając quizy postaci</p>
+        <!-- LEFT COLUMN: Image Puzzle Reveal (5 Tiles Vertical) -->
+        <section class="lg:col-span-5 flex flex-col items-center">
+            <div class="w-full max-w-sm bg-slytherin-card p-4 rounded-xl border border-slytherin-border emerald-border-glow">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-header text-lg text-emerald-400">Arkanum Obrazu</h2>
+                    <span id="unlocked-count" class="text-xs font-mono bg-slytherin-dark text-slytherin-emerald px-2 py-1 rounded border border-slytherin-border">0 / 5 odkrytych</span>
+                </div>
+
+                <!-- 5 Vertical Slices Image Container -->
+                <div class="relative w-full aspect-[9/16] rounded-lg overflow-hidden border border-slytherin-border/80 bg-black shadow-2xl flex flex-col" id="puzzle-container">
+                    
+                    <!-- Tile 5 (Top: Head / Face / Headphones) -->
+                    <div class="puzzle-tile relative flex-1 border-b border-black/40 overflow-hidden group" data-tile="5">
+                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 0%;"></div>
+                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
+                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
+                                🔒 Część V (Głowa)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Tile 4 (Upper Mid: Face / Glasses / Neck) -->
+                    <div class="puzzle-tile relative flex-1 border-b border-black/40 overflow-hidden group" data-tile="4">
+                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 25%;"></div>
+                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
+                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
+                                🔒 Część IV (Twarz)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Tile 3 (Mid: Chest / Polo Shirt) -->
+                    <div class="puzzle-tile relative flex-1 border-b border-black/40 overflow-hidden group" data-tile="3">
+                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 50%;"></div>
+                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
+                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
+                                🔒 Część III
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Tile 2 (Lower Mid: Hands / Phone / Torso) -->
+                    <div class="puzzle-tile relative flex-1 border-b border-black/40 overflow-hidden group" data-tile="2">
+                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 75%;"></div>
+                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
+                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
+                                🔒 Część II
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Tile 1 (Bottom: Waist / Trousers) -->
+                    <div class="puzzle-tile relative flex-1 overflow-hidden group" data-tile="1">
+                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 100%;"></div>
+                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
+                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
+                                🔒 Część I
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <p class="text-xs text-center text-gray-500 italic mt-3 font-serif">
+                    Rozwiązuj kolejne etapy pytań, aby odsłonić skrywaną tożsamość postronnego czarodzieja...
+                </p>
+            </div>
+        </section>
+
+        <!-- RIGHT COLUMN: Days Navigation & Quiz Interface -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Days Tabs -->
+            <div class="flex flex-wrap gap-2 p-1.5 bg-slytherin-dark rounded-xl border border-slytherin-border" id="days-tabs">
+                <!-- Javascript will inject tabs here -->
             </div>
 
-            <!-- Puzzle Container -->
-            <div class="relative w-full max-w-md mx-auto aspect-[4/3] rounded-xl overflow-hidden border-2 border-potter-gold shadow-2xl bg-black">
-                <!-- Secret Image Underneath -->
-                <img id="secretImage" 
-                     src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop" 
-                     alt="Tajemnicza Niespodzianka" 
-                     class="absolute inset-0 w-full h-full object-cover">
-
-                <!-- Grid of 5 Puzzle Pieces -->
-                <div class="absolute inset-0 grid grid-cols-6 grid-rows-2 gap-1 p-1 bg-black/40 backdrop-blur-[1px]">
-                    <!-- Piece 1: Hagrid (Top Left) -->
-                    <div id="puzzle-0" class="puzzle-overlay col-span-2 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
-                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">I</span>
-                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Hagrid</span>
+            <!-- Quiz Card -->
+            <div class="bg-slytherin-card rounded-xl border border-slytherin-border p-6 shadow-xl relative min-h-[420px] flex flex-col justify-between" id="quiz-card">
+                
+                <div id="quiz-content">
+                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-slytherin-border/50">
+                        <span id="day-badge" class="font-header text-xs tracking-widest text-emerald-400 uppercase">Dzień I</span>
+                        <span id="quiz-progress-text" class="text-xs text-gray-400 font-mono">Pytanie 1 / 4</span>
                     </div>
 
-                    <!-- Piece 2: Harry (Top Middle) -->
-                    <div id="puzzle-1" class="puzzle-overlay col-span-2 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
-                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">II</span>
-                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Harry</span>
-                    </div>
+                    <h3 id="question-title" class="font-serif text-2xl text-gray-100 font-semibold mb-6 leading-snug">
+                        Ładowanie pytania...
+                    </h3>
 
-                    <!-- Piece 3: Snape (Top Right) -->
-                    <div id="puzzle-2" class="puzzle-overlay col-span-2 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
-                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">III</span>
-                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Snape</span>
-                    </div>
-
-                    <!-- Piece 4: Hermione (Bottom Left 3 cols) -->
-                    <div id="puzzle-3" class="puzzle-overlay col-span-3 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
-                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">IV</span>
-                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Hermiona</span>
-                    </div>
-
-                    <!-- Piece 5: Dumbledore (Bottom Right 3 cols) -->
-                    <div id="puzzle-4" class="puzzle-overlay col-span-3 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
-                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">V</span>
-                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Dumbledore</span>
+                    <div id="answers-container" class="space-y-3">
+                        <!-- Javascript injects answers -->
                     </div>
                 </div>
+
+                <!-- Navigation Controls inside Card -->
+                <div class="mt-8 pt-4 border-t border-slytherin-border/50 flex justify-between items-center">
+                    <button id="prev-q-btn" onclick="prevQuestion()" class="px-4 py-2 rounded-lg bg-slytherin-dark hover:bg-slytherin-accent border border-slytherin-border text-xs uppercase tracking-wider text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed transition">
+                        ← Poprzednie
+                    </button>
+                    <button id="next-q-btn" onclick="nextQuestion()" class="px-5 py-2 rounded-lg bg-slytherin-emerald/20 hover:bg-slytherin-emerald/30 border border-slytherin-emerald/50 text-xs font-semibold uppercase tracking-wider text-emerald-300 transition">
+                        Następne →
+                    </button>
+                </div>
+
             </div>
+
+            <!-- Lock Info / Status Message -->
+            <div id="status-box" class="p-4 rounded-lg bg-slytherin-dark/60 border border-slytherin-border/60 text-sm text-gray-400 flex items-center justify-between">
+                <span id="status-message">Ukończ obecny etap, by zdobyć fragment pieczęci.</span>
+                <span id="score-indicator" class="font-mono text-emerald-400 font-bold"></span>
+            </div>
+
         </section>
 
-        <!-- Section: Characters Roadmap -->
-        <section class="space-y-4">
-            <h2 class="font-magic text-xl sm:text-2xl text-center text-potter-gold font-bold mb-6">
-                Wybierz Etap Quizu
-            </h2>
-
-            <div id="characterCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                <!-- Cards generated via JS -->
-            </div>
-        </section>
     </main>
 
-    <!-- Quiz Modal -->
-    <div id="quizModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-potter-cardBg gold-border rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl my-8 max-h-[90vh] flex flex-col justify-between">
-            
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-potter-gold text-2xl font-bold transition">
-                ✕
-            </button>
+    <!-- Admin & Reset Bar Footer -->
+    <footer class="w-full py-4 border-t border-slytherin-border/40 bg-slytherin-dark/90 text-xs text-gray-500">
+        <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-between items-center gap-4">
+            <div class="flex gap-3 items-center">
+                <button onclick="toggleAdminPanel()" class="hover:text-emerald-400 underline transition">
+                    ⚙️ Panel Testowy / Opcje
+                </button>
+                <span>|</span>
+                <button onclick="resetProgress()" class="hover:text-red-400 underline transition">
+                    🔄 Zrestartuj Postęp
+                </button>
+            </div>
+            <span>Stworzone z myślą o wyjątkowych urodzinach 🧙‍♀️</span>
+        </div>
 
+        <!-- Admin Panel Dropdown -->
+        <div id="admin-panel" class="hidden max-w-6xl mx-auto px-4 mt-4 pt-4 border-t border-slytherin-border/30 grid grid-cols-1 md:grid-cols-2 gap-4 bg-slytherin-card/50 p-4 rounded-lg">
             <div>
-                <div class="flex items-center space-x-4 border-b border-potter-gold/30 pb-4 mb-6">
-                    <img id="modalCharImg" src="" alt="Postać" class="w-14 h-14 rounded-full object-cover border-2 border-potter-gold">
-                    <div>
-                        <h3 id="modalCharName" class="font-magic text-2xl font-bold text-potter-gold">Quiz</h3>
-                        <p class="text-xs text-gray-400">Odpowiedz poprawnie na co najmniej 2 pytania</p>
-                    </div>
+                <label class="block mb-1 text-gray-400">Podgląd dowolnego zdjęcia (URL):</label>
+                <div class="flex gap-2">
+                    <input type="text" id="custom-img-url" placeholder="Wklej adres obrazka..." class="flex-1 bg-slytherin-dark border border-slytherin-border rounded px-2 py-1 text-gray-200">
+                    <button onclick="applyCustomImage()" class="px-3 py-1 bg-slytherin-emerald/30 text-emerald-300 rounded border border-slytherin-emerald/50">Zastosuj</button>
                 </div>
-
-                <!-- Questions Container -->
-                <div id="questionsContainer" class="space-y-6 overflow-y-auto max-h-[50vh] pr-2">
-                    <!-- Dynamic Question Content -->
-                </div>
             </div>
-
-            <!-- Modal Footer Controls -->
-            <div class="mt-6 pt-4 border-t border-potter-gold/30 flex justify-end space-x-3">
-                <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold border border-gray-600 text-gray-300 hover:bg-gray-800 transition">
-                    Anuluj
-                </button>
-                <button onclick="submitQuiz()" class="px-6 py-2 rounded-lg text-sm font-bold bg-potter-gold text-black hover:bg-yellow-400 shadow-lg transition">
-                    Sprawdź Odpowiedzi
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Result Alert Modal -->
-    <div id="resultModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-potter-cardBg gold-border rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
-            <div id="resultIcon" class="text-5xl">⚡</div>
-            <h3 id="resultTitle" class="font-magic text-2xl font-bold text-potter-gold"></h3>
-            <p id="resultText" class="text-gray-300 text-sm leading-relaxed"></p>
-            <div id="passwordBadge" class="hidden bg-potter-burgundy/40 border border-potter-gold p-3 rounded-lg text-potter-gold font-mono text-sm"></div>
-            <button onclick="closeResultModal()" class="w-full py-2.5 rounded-lg font-bold bg-potter-gold text-black hover:bg-yellow-400 transition">
-                Kontynuuj
-            </button>
-        </div>
-    </div>
-
-    <!-- Footer & Developer Panel -->
-    <footer class="mt-12 text-center text-xs text-gray-500 border-t border-potter-gold/20 pt-6 pb-2 space-y-3">
-        <p>Stworzone z magią dla wyjątkowej osoby ✨</p>
-        
-        <div class="flex justify-center items-center space-x-4">
-            <button onclick="toggleDevPanel()" class="text-gray-600 hover:text-potter-gold underline transition">
-                🛠️ Panel Twórcy / Testowy
-            </button>
-        </div>
-
-        <div id="devPanel" class="hidden max-w-md mx-auto p-4 bg-stone-900 border border-gray-700 rounded-xl space-y-3 text-left">
-            <h4 class="font-bold text-potter-gold text-sm border-b border-gray-700 pb-1">Ustawienia Testowe (Widoczne tylko dla Ciebie):</h4>
-            
-            <div>
-                <label class="block text-[11px] text-gray-400 mb-1">Data Startu Wyzwania (Dzień 1):</label>
-                <input type="date" id="startDateInput" onchange="updateStartDate(this.value)" class="bg-black border border-gray-700 text-white rounded p-1 text-xs w-full">
-            </div>
-
-            <div>
-                <label class="block text-[11px] text-gray-400 mb-1">Link do Zdjęcia Niespodzianki:</label>
-                <input type="text" id="customImgInput" placeholder="Wklej adres obrazka..." onchange="updateCustomImage(this.value)" class="bg-black border border-gray-700 text-white rounded p-1 text-xs w-full">
-            </div>
-
-            <div class="flex space-x-2 pt-2">
-                <button onclick="unlockAllDev()" class="flex-1 py-1 bg-green-900 hover:bg-green-800 text-green-200 rounded text-[11px] font-bold">
-                    Odblokuj Wszystko
-                </button>
-                <button onclick="resetProgress()" class="flex-1 py-1 bg-red-900 hover:bg-red-800 text-red-200 rounded text-[11px] font-bold">
-                    Zresetuj Postęp
+            <div class="flex items-center gap-2">
+                <button onclick="unlockAllDays()" class="px-3 py-1 bg-amber-900/30 text-amber-300 border border-amber-800 rounded hover:bg-amber-800/40 transition">
+                    🔓 Odblokuj Wszystkie Dni (Test)
                 </button>
             </div>
         </div>
     </footer>
 
     <script>
-        // --- DATA STRUCTURE ---
-        const CHARACTERS = [
+        // Default Image (Selfie uploaded)
+        const DEFAULT_IMAGE = 'selfie.png';
+        let currentImageUrl = DEFAULT_IMAGE;
+
+        // Quiz Questions Data (5 Days, 4 questions per day)
+        const QUIZ_DATA = [
             {
-                id: 'hagrid',
-                dayOffset: 0, // Day 1
-                name: 'Rubeus Hagrid',
-                role: 'Strażnik Kluczy',
-                img: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=400&auto=format&fit=crop',
-                password: 'ALOHOMORA_STAWOPUSZCZ',
+                day: 1,
+                title: "Dzień I: Korytarze Hogwartu",
+                tileIndex: 1, // Unlock bottom tile 1
                 questions: [
-                    { q: 'Jakie stworzenie Hagrid wyhodował potajemnie w I tomie?', options: ['Aragog', 'Norbert (Norberta)', 'Kieł', 'Puszek'], correct: 1 },
-                    { q: 'Czym zajmuje się Hagrid w Hogwarcie?', options: ['Nauczyciel Eliksirów', 'Strażnik Kluczy i Terenów', 'Woźny', 'Bibliotekarz'], correct: 1 },
-                    { q: 'Jak ma na imię ukochany pies Hagrida?', options: ['Kieł', 'Puszek', 'Pazur', 'Bucky'], correct: 0 },
-                    { q: 'Z czego zrobiona była czarodziejska różdżka Hagrida ukryta w parasolu?', options: ['Z dębu', 'Z ostrokrzewu', 'Z czarnego bzu', 'Z cisowej gałęzi'], correct: 0 }
+                    {
+                        q: "Który z domów szczyci się sprytem, braterstwem i ambicją?",
+                        options: ["Gryffindor", "Slytherin", "Ravenclaw", "Hufflepuff"],
+                        correct: 1
+                    },
+                    {
+                        q: "Jak brzmi zaklęcie otwierające większość magicznych zamków?",
+                        options: ["Alohomora", "Colloportus", "Aparecium", "Reducto"],
+                        correct: 0
+                    },
+                    {
+                        q: "Ile wynosi numer peronu, z którego odjeżdża Hogwarts Express?",
+                        options: ["9", "9 i 1/2", "9 i 3/4", "10"],
+                        correct: 2
+                    },
+                    {
+                        q: "Kto był opiekunem Domu Slytherina na początku nauki Harry'ego?",
+                        options: ["Horacy Slughorn", "Severus Snape", "Minerva McGonagall", "Filius Flitwick"],
+                        correct: 1
+                    }
                 ]
             },
             {
-                id: 'harry',
-                dayOffset: 1, // Day 2
-                name: 'Harry Potter',
-                role: 'Chłopiec, Który Przeżył',
-                img: 'https://images.unsplash.com/photo-1618944847023-38aa001235f0?q=80&w=400&auto=format&fit=crop',
-                password: 'EXPELIAMUS_ZŁOTY_ZNICZ',
+                day: 2,
+                title: "Dzień II: Zakazany Las & Eliksiry",
+                tileIndex: 2, // Unlock tile 2
                 questions: [
-                    { q: 'Jaką pozycję zajmuje Harry w drużynie Quidditcha Gryffindoru?', options: ['Obrońca', 'Ścigający', 'Szukający', 'Pałkarz'], correct: 2 },
-                    { q: 'Jaką postać przybiera Patronus Harrego?', options: ['Pies', 'Jeleń', 'Otter (Wydra)', 'Sokół'], correct: 1 },
-                    { q: 'Jaki rdzeń posiada różdżka Harrego?', options: ['Włos z ogona jednorożca', 'Włókno z serca smoka', 'Pióro feniksa', 'Włos z wili'], correct: 2 },
-                    { q: 'Kto był ojcem chrzestnym Harrego?', options: ['Remus Lupin', 'Syriusz Black', 'Albus Dumbledore', 'Severus Snape'], correct: 1 }
+                    {
+                        q: "Składnikiem Eliksiru Wielosokowego NIE jest:",
+                        options: ["Róg dwurożca", "Skóra ślizgacza", "Włos osoby, w którą się zmieniamy", "Łza feniksa"],
+                        correct: 3
+                    },
+                    {
+                        q: "Jak nazywa się hipogryf należący do Hagrida?",
+                        options: ["Aramis", "Kieł", "Hardodziob", "Norbert"],
+                        correct: 2
+                    },
+                    {
+                        q: "Co trzeba zrobić, by uspokoić Puszka (trójgłowego psa)?",
+                        options: ["Zagrać muzykę", "Rzucić mu mięso", "Klasnąć trzy razy", "Wypowiedzieć 'Silencio'"],
+                        correct: 0
+                    },
+                    {
+                        q: "Jakie stworzenie strzeże krypt w Banku Gringotta?",
+                        options: ["Troll", "Smok", "Banshee", "Aromantula"],
+                        correct: 1
+                    }
                 ]
             },
             {
-                id: 'snape',
-                dayOffset: 2, // Day 3
-                name: 'Severus Snape',
-                role: 'Mistrz Eliksirów',
-                img: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=400&auto=format&fit=crop',
-                password: 'ALWAYS_ZWKŁOŚĆ_I_MAGIA',
+                day: 3,
+                title: "Dzień III: Mroczne Sztuki i Artefakty",
+                tileIndex: 3, // Unlock tile 3
                 questions: [
-                    { q: 'Jakiego przedmiotu Snape najbardziej pragnął uczyć?', options: ['Obrona Przed Czarną Magią', 'Eliksiry', 'Zielarstwo', 'Transfiguracja'], correct: 0 },
-                    { q: 'Jak brzmiał pseudonim Severusa z czasów szkolnych?', options: ['Książę Półkrwi', 'Lunatyk', 'Rogacz', 'Szapa'], correct: 0 },
-                    { q: 'Jaki Patronus należał do Severusa Snape’a?', options: ['Łania', 'Wilk', 'Wąż', 'Kruk'], correct: 0 },
-                    { q: 'Dom, którego Snape był opiekunem w Hogwarcie to:', options: ['Ravenclaw', 'Slytherin', 'Hufflepuff', 'Gryffindor'], correct: 1 }
+                    {
+                        q: "Który przedmiot NIE jest jednym z Insygniów Śmierci?",
+                        options: ["Czarna Różdżka", "Kamień Wskrzeszenia", "Przylądek Niewidka", "Złoty Znicz"],
+                        correct: 3
+                    },
+                    {
+                        q: "Formą Bogina dla Remusa Lupina jest:",
+                        options: ["Pełnia Księżyca", "Srebrny Sztylet", "Złowrogi Cień", "Wąż"],
+                        correct: 0
+                    },
+                    {
+                        q: "Gdzie znajduje się pokój, w którym ukryto Horkruks Diadem?",
+                        options: ["W Lochach", "W Pokoju Życzeń", "W Wieży Astronomicznej", "W Gabinecie Dumbledore'a"],
+                        correct: 1
+                    },
+                    {
+                        q: "Zaklęcie 'Sectumsempra' zostało stworzone przez:",
+                        options: ["Tom Marvolo Riddle", "Księcia Półkrwi", "Gellerta Grindelwalda", "Luciusa Malfoya"],
+                        correct: 1
+                    }
                 ]
             },
             {
-                id: 'hermione',
-                dayOffset: 3, // Day 4
-                name: 'Hermiona Granger',
-                role: 'Najjaśniejsza Czarownica',
-                img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=400&auto=format&fit=crop',
-                password: 'WINGARDIUM_LEVIOSA_SERCE',
+                day: 4,
+                title: "Dzień IV: Tajemnica Twarzy (Głowa cz. I)",
+                tileIndex: 4, // Unlock tile 4 (Face area)
                 questions: [
-                    { q: 'Czym wyróżniała się Hermiona na trzecim roku studiów?', options: ['Latała na miotle najlepiej w szkole', 'Używała Zmieniacza Czasu', 'Była animagiem', 'Mówiła mową wężów'], correct: 1 },
-                    { q: 'Jak wabił się kot Hermiony?', options: ['Pani Norris', 'Krzywołap', 'Puszek', 'Nagini'], correct: 1 },
-                    { q: 'Jaki był Patronus Hermiony?', options: ['Wydra', 'Zając', 'Łabędź', 'Kot'], correct: 0 },
-                    { q: 'Jak nazywała się organizacja założona przez Hermionę na rzecz Skrzatów?', options: ['W.S.P.O.M.O.G.A.', 'W.S.P.I.E.R.A.J.', 'S.P.E.W. (S.P.E.K.O.R.)', 'G.A.L.O.P.'], correct: 2 }
+                    {
+                        q: "Jaki patronus należał do Severusa Snape'a?",
+                        options: ["Łania", "Jeleń", "Pies", "Sowa"],
+                        correct: 0
+                    },
+                    {
+                        q: "Co oznacza skrót N.O.W.T. (Owutemy)?",
+                        options: ["Okropnie Wyczerpujące Testy Magiczne", "Ostateczny Wyzysk Twórczy", "Okropnie Wybitne Testy Tajemne", "Ogólne Warsztaty Tworzenia Zaklęć"],
+                        correct: 0
+                    },
+                    {
+                        q: "Gdzie mieści się kwatera główna Zakonu Feniksa?",
+                        options: ["Dolina Godryka 12", "Grimmauld Place 12", "Ulica Pokątna 4", "Privet Drive 4"],
+                        correct: 1
+                    },
+                    {
+                        q: "Jaki napis widnieje na Zwierciadle Ain Eingarp czytany od tyłu?",
+                        options: ["I desire not your face", "I show not your face but your heart's desire", "Secrets lie within", "Magic reveals all"],
+                        correct: 1
+                    }
                 ]
             },
             {
-                id: 'dumbledore',
-                dayOffset: 4, // Day 5
-                name: 'Albus Dumbledore',
-                role: 'Dyrektor Hogwartu',
-                img: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?q=80&w=400&auto=format&fit=crop',
-                password: 'LUMOS_SPEŁNIENIE_MARZEŃ',
+                day: 5,
+                title: "Dzień V: Finałowe Odsłonięcie (Głowa cz. II)",
+                tileIndex: 5, // Unlock tile 5 (Full Head)
                 questions: [
-                    { q: 'Jak nazywał się feniks Dumbledore’a?', options: ['Fawkes', 'Errol', 'Hedwiga', 'Arax'], correct: 0 },
-                    { q: 'Jaki słodki przysmak Dumbledore uwielbiał i używał jako hasła?', options: ['Czekoladowe żaby', 'Cytrynowe dropsy', 'Fasolki wszystkich smaków', 'Kociołkowe pieczywo'], correct: 1 },
-                    { q: 'Z kim Dumbledore stoczył słynny pojedynek w 1945 roku?', options: ['Voldemortem', 'Gellertem Grindelwaldem', 'Luciuszym Malfoyem', 'Severusem Snapem'], correct: 1 },
-                    { q: 'Którą z Insygniów Śmierci Dumbledore posiadał przez lata?', options: ['Pelerynę Niewidkę', 'Czarną Różdżkę', 'Kamień Wskrzeszenia', 'Miskę Wspomnień'], correct: 1 }
+                    {
+                        q: "Jaki jest główny rdzeń w różdżce Lorda Voldemorta?",
+                        options: ["Włos z ogona jednorożca", "Pióro feniksa", "Włókno ze smoczego serca", "Włos z głowy wili"],
+                        correct: 1
+                    },
+                    {
+                        q: "Jakie słowa kończą działanie Mapy Huncwotów?",
+                        options: ["Koniec psot", "Uroczysto przysięgam", "Mroki ustąpcie", "Nox"],
+                        correct: 0
+                    },
+                    {
+                        q: "Który horkruks został zniszczony mieczem Gryffindora przez Rona?",
+                        options: ["Pierścień Gaunta", "Medalion Slytherina", "Czara Hufflepuff", "Wąż Nagini"],
+                        correct: 1
+                    },
+                    {
+                        q: "Czy po rozwiązaniu tych 5 etapów uznajesz, że NIE jesteś mugolem?",
+                        options: ["Absolutnie nie jestem!", "Zdecydowanie jestem czarownicą!", "Zawsze miałam różdżkę w kieszeni", "Wszystkie odpowiedzi są poprawne"],
+                        correct: 3
+                    }
                 ]
             }
         ];
 
-        // --- STATE MANAGEMENT ---
-        let startDate = localStorage.getItem('hp_quiz_startDate') || new Date().toISOString().split('T')[0];
-        let completedQuizzes = JSON.parse(localStorage.getItem('hp_quiz_completed') || '[]');
-        let customImage = localStorage.getItem('hp_quiz_customImage') || '';
-        let currentQuizIndex = null;
-
-        // --- STREAMING_CHUNK:App Initialization logic... ---
-        window.onload = function() {
-            if (!localStorage.getItem('hp_quiz_startDate')) {
-                localStorage.setItem('hp_quiz_startDate', startDate);
-            }
-            document.getElementById('startDateInput').value = startDate;
-            
-            if (customImage) {
-                document.getElementById('secretImage').src = customImage;
-                document.getElementById('customImgInput').value = customImage;
-            }
-
-            renderCards();
-            updatePuzzleGrid();
+        // State Management
+        let state = {
+            currentDay: 1,
+            currentQuestionIdx: 0,
+            answers: {}, // Key format: "day_qIdx": selectedAnswerIndex
+            unlockedDays: [1], // Day 1 always unlocked initially
+            passedDays: [] // Days where >= 2 questions answered correctly
         };
 
-        // --- CORE FUNCTIONS ---
-        function getDaysPassed() {
-            const start = new Date(startDate);
-            const today = new Date();
-            start.setHours(0,0,0,0);
-            today.setHours(0,0,0,0);
-            const diffTime = today - start;
-            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        // Initialize App
+        window.onload = function() {
+            loadState();
+            updateImagePuzzleSources();
+            renderDaysTabs();
+            renderQuestion();
+            updatePuzzleDisplay();
+        };
+
+        // Load State from LocalStorage
+        function loadState() {
+            const saved = localStorage.getItem('hp_birthday_quest_state_v2');
+            if (saved) {
+                try {
+                    state = JSON.parse(saved);
+                } catch(e) {
+                    console.error("Failed to parse saved state", e);
+                }
+            }
         }
 
-        function isCharacterUnlocked(index) {
-            const daysPassed = getDaysPassed();
-            const dayReached = daysPassed >= CHARACTERS[index].dayOffset;
-            const previousCompleted = index === 0 || completedQuizzes.includes(CHARACTERS[index - 1].id);
-            return dayReached && previousCompleted;
+        // Save State
+        function saveState() {
+            localStorage.setItem('hp_birthday_quest_state_v2', JSON.stringify(state));
         }
 
-        // --- RENDER CARDS ---
-        function renderCards() {
-            const container = document.getElementById('characterCardsContainer');
-            container.innerHTML = '';
+        // Render Navigation Tabs for Days
+        function renderDaysTabs() {
+            const tabsContainer = document.getElementById('days-tabs');
+            tabsContainer.innerHTML = '';
 
-            CHARACTERS.forEach((char, index) => {
-                const unlocked = isCharacterUnlocked(index);
-                const completed = completedQuizzes.includes(char.id);
+            QUIZ_DATA.forEach(d => {
+                const isUnlocked = state.unlockedDays.includes(d.day);
+                const isPassed = state.passedDays.includes(d.day);
+                const isActive = state.currentDay === d.day;
 
-                const card = document.createElement('div');
-                card.className = `relative rounded-xl p-4 flex flex-col items-center text-center transition-all duration-300 border backdrop-blur-md ${
-                    completed 
-                        ? 'bg-potter-burgundy/20 border-potter-gold/60 shadow-lg shadow-potter-gold/10' 
-                        : unlocked 
-                            ? 'bg-potter-cardBg hover:bg-stone-800 border-potter-gold/40 hover:border-potter-gold cursor-pointer hover:scale-105 shadow-md' 
-                            : 'bg-stone-900/60 border-stone-800 opacity-60 cursor-not-allowed'
+                const btn = document.createElement('button');
+                btn.className = `flex-1 py-2 px-3 rounded-lg font-header text-xs transition duration-200 flex items-center justify-center gap-1.5 min-w-[100px] ${
+                    isActive 
+                        ? 'bg-slytherin-emerald text-slytherin-dark font-bold shadow-lg' 
+                        : isUnlocked 
+                            ? 'bg-slytherin-card hover:bg-slytherin-accent text-gray-300 border border-slytherin-border' 
+                            : 'bg-slytherin-dark/40 text-gray-600 border border-slytherin-border/30 cursor-not-allowed'
                 }`;
 
-                card.onclick = () => handleCardClick(index);
+                let statusIcon = isPassed ? '✓' : isUnlocked ? '📖' : '🔒';
+                btn.innerHTML = `<span>Etap ${d.day}</span> <span class="text-[10px] opacity-80">${statusIcon}</span>`;
+                
+                if (isUnlocked) {
+                    btn.onclick = () => selectDay(d.day);
+                } else {
+                    btn.disabled = true;
+                }
 
-                card.innerHTML = `
-                    <div class="relative w-20 h-20 mb-3">
-                        <img src="${char.img}" alt="${char.name}" class="w-full h-full object-cover rounded-full border-2 ${unlocked ? 'border-potter-gold' : 'border-gray-600 grayscale'}">
-                        ${completed ? '<span class="absolute bottom-0 right-0 bg-potter-gold text-black rounded-full text-xs w-6 h-6 flex items-center justify-center font-bold">✓</span>' : ''}
-                        ${!unlocked ? '<span class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center text-xl">🔒</span>' : ''}
-                    </div>
-
-                    <span class="text-[10px] uppercase font-bold text-potter-gold tracking-widest mb-1">Dzień ${char.dayOffset + 1}</span>
-                    <h3 class="font-magic font-bold text-base text-white mb-1">${char.name}</h3>
-                    <p class="text-[11px] text-gray-400 mb-3">${char.role}</p>
-
-                    <div class="mt-auto w-full">
-                        ${completed 
-                            ? '<span class="text-xs text-potter-gold font-semibold">Ukończony ✨</span>' 
-                            : unlocked 
-                                ? '<button class="w-full py-1.5 bg-potter-gold/20 hover:bg-potter-gold hover:text-black border border-potter-gold text-potter-gold text-xs font-bold rounded transition">Rozpocznij</button>' 
-                                : `<span class="text-[11px] text-gray-500">Zablokowany</span>`
-                        }
-                    </div>
-                `;
-
-                container.appendChild(card);
+                tabsContainer.appendChild(btn);
             });
         }
 
-        // --- PUZZLE GRID UPDATE ---
-        function updatePuzzleGrid() {
-            CHARACTERS.forEach((char, index) => {
-                const piece = document.getElementById(`puzzle-${index}`);
-                if (piece) {
-                    if (completedQuizzes.includes(char.id)) {
-                        piece.classList.add('unlocked');
-                    } else {
-                        piece.classList.remove('unlocked');
+        // Select Day
+        function selectDay(dayNum) {
+            state.currentDay = dayNum;
+            state.currentQuestionIdx = 0;
+            saveState();
+            renderDaysTabs();
+            renderQuestion();
+        }
+
+        // Render Active Question
+        function renderQuestion() {
+            const dayData = QUIZ_DATA.find(d => d.day === state.currentDay);
+            const question = dayData.questions[state.currentQuestionIdx];
+
+            // Badge & Title
+            document.getElementById('day-badge').innerText = `${dayData.title}`;
+            document.getElementById('quiz-progress-text').innerText = `Pytanie ${state.currentQuestionIdx + 1} / ${dayData.questions.length}`;
+            document.getElementById('question-title').innerText = question.q;
+
+            // Answers List
+            const container = document.getElementById('answers-container');
+            container.innerHTML = '';
+
+            const selectedAnsKey = `${state.currentDay}_${state.currentQuestionIdx}`;
+            const userSelected = state.answers[selectedAnsKey];
+
+            question.options.forEach((opt, idx) => {
+                const isSelected = userSelected === idx;
+                
+                const optionBtn = document.createElement('button');
+                optionBtn.className = `w-full text-left p-4 rounded-lg font-serif text-lg border transition duration-200 flex items-center justify-between ${
+                    isSelected 
+                        ? 'bg-slytherin-emerald/20 border-slytherin-emerald text-emerald-200 font-semibold shadow-md' 
+                        : 'bg-slytherin-dark/60 hover:bg-slytherin-accent/60 border-slytherin-border/70 text-gray-300'
+                }`;
+
+                optionBtn.innerHTML = `
+                    <span class="flex items-center gap-3">
+                        <span class="w-6 h-6 rounded-full border border-slytherin-border flex items-center justify-center text-xs font-sans ${isSelected ? 'border-slytherin-emerald bg-slytherin-emerald text-slytherin-dark font-bold' : 'text-gray-500'}">
+                            ${String.fromCharCode(65 + idx)}
+                        </span>
+                        ${opt}
+                    </span>
+                    ${isSelected ? '<span class="text-slytherin-emerald text-sm">✦</span>' : ''}
+                `;
+
+                optionBtn.onclick = () => answerQuestion(idx);
+                container.appendChild(optionBtn);
+            });
+
+            // Prev / Next Buttons
+            document.getElementById('prev-q-btn').disabled = state.currentQuestionIdx === 0;
+            const isLast = state.currentQuestionIdx === dayData.questions.length - 1;
+            document.getElementById('next-q-btn').innerText = isLast ? 'Sprawdź Etap ✓' : 'Następne →';
+
+            updateStatusMessage();
+        }
+
+        // Handle Answer Selection
+        function answerQuestion(optionIdx) {
+            const key = `${state.currentDay}_${state.currentQuestionIdx}`;
+            state.answers[key] = optionIdx;
+            saveState();
+            renderQuestion();
+            checkAndCalculateDayProgress();
+        }
+
+        // Navigation
+        function prevQuestion() {
+            if (state.currentQuestionIdx > 0) {
+                state.currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            const dayData = QUIZ_DATA.find(d => d.day === state.currentDay);
+            if (state.currentQuestionIdx < dayData.questions.length - 1) {
+                state.currentQuestionIdx++;
+                renderQuestion();
+            } else {
+                // Finish Day
+                checkAndCalculateDayProgress(true);
+            }
+        }
+
+        // Calculate Progress & Check if 2/4 passed
+        function checkAndCalculateDayProgress(alertUser = false) {
+            const dayData = QUIZ_DATA.find(d => d.day === state.currentDay);
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            dayData.questions.forEach((q, idx) => {
+                const key = `${state.currentDay}_${idx}`;
+                if (state.answers[key] !== undefined) {
+                    answeredCount++;
+                    if (state.answers[key] === q.correct) {
+                        correctCount++;
                     }
                 }
             });
-        }
 
-        // --- INTERACTION HANDLERS ---
-        function handleCardClick(index) {
-            const char = CHARACTERS[index];
-            const daysPassed = getDaysPassed();
-            
-            if (completedQuizzes.includes(char.id)) {
-                showResultModal('⚡ Quiz Ukończony', `Już rozwiązałaś quiz dotyczący postaci ${char.name}! Hasło odblokowane:`, char.password);
-                return;
-            }
+            // If passed (>= 2 correct)
+            const passed = correctCount >= 2;
 
-            if (!isCharacterUnlocked(index)) {
-                if (daysPassed < char.dayOffset) {
-                    showResultModal('⏳ Magiczna Blokada Czasu', `Ten quiz odblokuje się w Dniu ${char.dayOffset + 1}! Wróć jutro, aby kontynuować przygodę.`);
-                } else {
-                    showResultModal('🔒 Kolejność Wymagana', `Musisz najpierw ukończyć poprzedni quiz, aby odblokować wyzwanie z postacią: ${char.name}!`);
-                }
-                return;
-            }
-
-            openQuizModal(index);
-        }
-
-        // --- STREAMING_CHUNK:Quiz Modal logic... ---
-        function openQuizModal(index) {
-            currentQuizIndex = index;
-            const char = CHARACTERS[index];
-
-            document.getElementById('modalCharImg').src = char.img;
-            document.getElementById('modalCharName').innerText = `Quiz: ${char.name}`;
-
-            const container = document.getElementById('questionsContainer');
-            container.innerHTML = '';
-
-            char.questions.forEach((qObj, qIdx) => {
-                const qBox = document.createElement('div');
-                qBox.className = 'bg-black/30 p-4 rounded-xl border border-potter-gold/20 space-y-3';
+            if (passed && !state.passedDays.includes(state.currentDay)) {
+                state.passedDays.push(state.currentDay);
                 
-                let optionsHTML = '';
-                qObj.options.forEach((opt, oIdx) => {
-                    optionsHTML += `
-                        <label class="flex items-center space-x-3 p-2 rounded-lg bg-stone-900/50 hover:bg-potter-gold/10 border border-transparent hover:border-potter-gold/30 cursor-pointer transition text-sm">
-                            <input type="radio" name="question_${qIdx}" value="${oIdx}" class="accent-potter-gold">
-                            <span class="text-gray-300">${opt}</span>
-                        </label>
-                    `;
-                });
+                // Unlock next day if exists
+                if (state.currentDay < 5 && !state.unlockedDays.includes(state.currentDay + 1)) {
+                    state.unlockedDays.push(state.currentDay + 1);
+                }
+                saveState();
+                renderDaysTabs();
+                updatePuzzleDisplay();
+            }
 
-                qBox.innerHTML = `
-                    <p class="font-semibold text-sm text-potter-gold">${qIdx + 1}. ${qObj.q}</p>
-                    <div class="space-y-1.5">${optionsHTML}</div>
-                `;
+            if (alertUser) {
+                if (passed) {
+                    const msg = state.currentDay === 5 
+                        ? "🎉 Gratulacje! Rozwiązałaś cały quiz i całkowicie odkodowałaś tajemniczy obraz!" 
+                        : `✨ Gratulacje! Uzyskałaś ${correctCount}/4 poprawnych odpowiedzi. Następny etap i fragment obrazu został odblokowany!`;
+                    alert(msg);
+                } else {
+                    alert(`Potrzebujesz co najmniej 2 poprawnych odpowiedzi (Obecnie: ${correctCount}/4). Spróbuj ponownie zmienić odpowiedzi!`);
+                }
+            }
 
-                container.appendChild(qBox);
-            });
-
-            document.getElementById('quizModal').classList.remove('hidden');
+            updateStatusMessage(correctCount, dayData.questions.length);
         }
 
-        function closeModal() {
-            document.getElementById('quizModal').classList.add('hidden');
-            currentQuizIndex = null;
-        }
+        // Status Bar Update
+        function updateStatusMessage(correct, total) {
+            const dayData = QUIZ_DATA.find(d => d.day === state.currentDay);
+            let correctCount = 0;
+            let answeredCount = 0;
 
-        function submitQuiz() {
-            if (currentQuizIndex === null) return;
-            const char = CHARACTERS[currentQuizIndex];
-            let score = 0;
-
-            char.questions.forEach((qObj, qIdx) => {
-                const selected = document.querySelector(`input[name="question_${qIdx}"]:checked`);
-                if (selected && parseInt(selected.value) === qObj.correct) {
-                    score++;
+            dayData.questions.forEach((q, idx) => {
+                const key = `${state.currentDay}_${idx}`;
+                if (state.answers[key] !== undefined) {
+                    answeredCount++;
+                    if (state.answers[key] === q.correct) {
+                        correctCount++;
+                    }
                 }
             });
 
-            closeModal();
+            const statusElem = document.getElementById('status-message');
+            const scoreElem = document.getElementById('score-indicator');
 
-            if (score >= 2) {
-                // Success
-                if (!completedQuizzes.includes(char.id)) {
-                    completedQuizzes.push(char.id);
-                    localStorage.setItem('hp_quiz_completed', JSON.stringify(completedQuizzes));
+            scoreElem.innerText = `Wynik: ${correctCount}/${dayData.questions.length}`;
+
+            if (state.passedDays.includes(state.currentDay)) {
+                statusElem.innerText = "✦ Etap Zaliczony! Fragment obrazu rozświetlony.";
+                statusElem.className = "text-emerald-400 font-semibold flex items-center gap-1";
+            } else if (answeredCount === dayData.questions.length) {
+                statusElem.innerText = "⚠️ Odpowiedziano na wszystkie pytania. Wymagane min. 2/4.";
+                statusElem.className = "text-amber-400";
+            } else {
+                statusElem.innerText = "Wybierz odpowiedzi na wszystkie pytania w tym etapie.";
+                statusElem.className = "text-gray-400";
+            }
+        }
+
+        // Update Puzzle Display
+        function updatePuzzleDisplay() {
+            let unlockedTotal = 0;
+
+            QUIZ_DATA.forEach(d => {
+                const isPassed = state.passedDays.includes(d.day);
+                const tileElem = document.querySelector(`.puzzle-tile[data-tile="${d.tileIndex}"]`);
+                
+                if (tileElem) {
+                    const imgDiv = tileElem.querySelector('.puzzle-img');
+                    const overlayDiv = tileElem.querySelector('.puzzle-overlay');
+
+                    if (isPassed) {
+                        unlockedTotal++;
+                        imgDiv.classList.remove('blur-xl', 'opacity-10', 'scale-110');
+                        imgDiv.classList.add('blur-none', 'opacity-100', 'scale-100');
+                        overlayDiv.classList.add('opacity-0', 'pointer-events-none');
+                    } else {
+                        imgDiv.classList.add('blur-xl', 'opacity-10', 'scale-110');
+                        imgDiv.classList.remove('blur-none', 'opacity-100', 'scale-100');
+                        overlayDiv.classList.remove('opacity-0', 'pointer-events-none');
+                    }
                 }
+            });
 
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 }
-                });
-
-                renderCards();
-                updatePuzzleGrid();
-
-                showResultModal(
-                    '🎉 Gratulacje! Zadanie Wykonane',
-                    `Twój wynik to ${score}/4! Odblokowujesz nowy fragment zdjęcia niespodzianki oraz zdobywasz sekretne hasło:`,
-                    char.password
-                );
-            } else {
-                // Fail
-                showResultModal(
-                    '❌ Spróbuj Ponownie',
-                    `Twój wynik to ${score}/4. Aby przejść dalej i odkryć puzzle, musisz odpowiedzieć poprawnie na co najmniej 2 pytania. Przeczytaj pytania uważnie i spróbuj jeszcze raz!`
-                );
-            }
+            document.getElementById('unlocked-count').innerText = `${unlockedTotal} / 5 odkrytych`;
         }
 
-        // --- RESULT MODAL ---
-        function showResultModal(title, text, password = null) {
-            document.getElementById('resultTitle').innerText = title;
-            document.getElementById('resultText').innerText = text;
-            
-            const badge = document.getElementById('passwordBadge');
-            if (password) {
-                badge.innerText = `🔑 Hasło: ${password}`;
-                badge.classList.remove('hidden');
-            } else {
-                badge.classList.add('hidden');
-            }
-
-            document.getElementById('resultModal').classList.remove('hidden');
+        // Apply Image Source to Puzzle Divs
+        function updateImagePuzzleSources() {
+            const imgDivs = document.querySelectorAll('.puzzle-img');
+            imgDivs.forEach(div => {
+                div.style.backgroundImage = `url('${currentImageUrl}')`;
+            });
         }
 
-        function closeResultModal() {
-            document.getElementById('resultModal').classList.add('hidden');
-        }
-
-        // --- STREAMING_CHUNK:Developer tools & testing helpers... ---
-        function toggleDevPanel() {
-            const panel = document.getElementById('devPanel');
+        // Admin Panel Controls
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
             panel.classList.toggle('hidden');
         }
 
-        function updateStartDate(val) {
-            startDate = val;
-            localStorage.setItem('hp_quiz_startDate', val);
-            renderCards();
-        }
-
-        function updateCustomImage(val) {
-            if (val.trim() !== '') {
-                customImage = val.trim();
-                localStorage.setItem('hp_quiz_customImage', customImage);
-                document.getElementById('secretImage').src = customImage;
+        function applyCustomImage() {
+            const url = document.getElementById('custom-img-url').value.trim();
+            if (url) {
+                currentImageUrl = url;
+                updateImagePuzzleSources();
+                alert('Podmieniono url obrazu!');
             }
         }
 
-        function unlockAllDev() {
-            completedQuizzes = CHARACTERS.map(c => c.id);
-            localStorage.setItem('hp_quiz_completed', JSON.stringify(completedQuizzes));
-            renderCards();
-            updatePuzzleGrid();
+        function unlockAllDays() {
+            state.unlockedDays = [1, 2, 3, 4, 5];
+            state.passedDays = [1, 2, 3, 4, 5];
+            saveState();
+            renderDaysTabs();
+            renderQuestion();
+            updatePuzzleDisplay();
+            alert('Odblokowano wszystkie 5 dni i ujawniono cały obraz!');
         }
 
         function resetProgress() {
-            completedQuizzes = [];
-            localStorage.removeItem('hp_quiz_completed');
-            renderCards();
-            updatePuzzleGrid();
+            if (confirm("Czy na pewno chcesz zrestartować cały postęp quizu?")) {
+                localStorage.removeItem('hp_birthday_quest_state_v2');
+                state = {
+                    currentDay: 1,
+                    currentQuestionIdx: 0,
+                    answers: {},
+                    unlockedDays: [1],
+                    passedDays: []
+                };
+                saveState();
+                renderDaysTabs();
+                renderQuestion();
+                updatePuzzleDisplay();
+            }
         }
     </script>
 </body>
