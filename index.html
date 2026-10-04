@@ -256,15 +256,20 @@
       background: var(--card-bg);
       border: 1px solid var(--border-dark);
       color: var(--text-light);
-      padding: 10px 15px;
+      padding: 12px 15px;
       border-radius: 4px;
       text-align: left;
       cursor: pointer;
       font-family: inherit;
-      transition: background 0.2s;
+      font-size: 1rem;
+      transition: all 0.2s ease;
     }
 
-    .option-btn:hover { background: #232a3a; border-color: var(--accent-emerald); }
+    .option-btn:hover { 
+      background: #232a3a; 
+      border-color: var(--accent-emerald); 
+      color: #fff;
+    }
 
     .quiz-footer {
       display: flex;
@@ -321,13 +326,13 @@
 
   <div class="modal-overlay" id="quizModal">
     <div class="modal-content">
-      <button class="close-btn" onclick="closeQuiz()">×</button>
+      <button class="close-btn" id="closeBtn">×</button>
       <div id="modalBody"></div>
     </div>
   </div>
 
   <details class="dev-panel">
-    <summary>🛠️ Panel Testowy (Symulacja dni i reset)</summary>
+    <summary>🛠️️ Panel Testowy (Symulacja dni i reset)</summary>
     <div class="dev-controls">
       <button class="dev-btn" onclick="setDevDay(1)">Dzień 1</button>
       <button class="dev-btn" onclick="setDevDay(2)">Dzień 2</button>
@@ -346,10 +351,10 @@
         day: 1,
         icon: "🗝️",
         questions: [
-          { q: "Gdzie Hagrid zdobył smocze jajo w pierwszej części przygód o Harrym?", answers: ["Karczma pod Świńskim Łbem", "Piwnica pod Trzema Miotłami", "Znalazł w lesie", "Sam urodził po swoich legandarnych babeczkach"], correct: 0 },
-          { q: "Gdzie Hagrid trzymał szczątki swojej różdżki?", answers: ["W majtkach", "W płaszczu", "W parasolce", "Nie miał różdżki"], correct: 2 },
-          { q: "Jak na imię miał przyrodni brat Hagrida?", answers: ["Gnat", "Gordin", "Penelopa", "Graup"], correct: 3 },
-          { q: "Za co wyrzucili Hagrida ze szkoły?", answers: ["Za śpiewanie pod prysznicem", "Za podwędzenie wędliny z szkolnej stołówki", "Rasizm na tle wielkościowym", "Został wrobiony w coś czego nie zrobił... Żydy."], correct: 3 }
+          { q: "Gdzie Hagrid zdobył smocze jajo w pierwszej części przygód o Harrym?", answers: ["A) Karczma pod Świńskim Łbem", "B) Piwnica pod Trzema Miotłami", "C) Znalazł w lesie", "D) Sam urodził po swoich legandarnych babeczkach"], correct: 0 },
+          { q: "Gdzie Hagrid trzymał szczątki swojej różdżki?", answers: ["A) W majtkach", "B) W płaszczu", "C) W parasolce", "D) Nie miał różdżki"], correct: 2 },
+          { q: "Jak na imię miał przyrodni brat Hagrida?", answers: ["A) Gnat", "B) Gordin", "C) Penelopa", "D) Graup"], correct: 3 },
+          { q: "Za co wyrzucili Hagrida ze szkoły?", answers: ["A) Za śpiewanie pod prysznicem", "B) Za podwędzenie wędliny z szkolnej stołówki", "C) Rasizm na tle wielkościowym", "D) Został wrobiony w coś czego nie zrobił... Żydy."], correct: 3 }
         ]
       },
       {
@@ -358,10 +363,10 @@
         day: 2,
         icon: "⚡",
         questions: [
-          { q: "Jakiej marki miotłę Harry otrzymał od Syriusza po utracie Nimbusa 2000?", answers: ["Nimbus 2001", "Kometa 290", "Błyskawica", "Srebrna Strzała"], correct: 2 },
-          { q: "Jak miał na imię mugolski sąsiad Harry'ego, którego Dudley i jego gang regularnie prześladowali?", answers: ["Mark Evans", "Dennis Creevey", "Piers Polkiss", "Nigel Wolpert"], correct: 0 },
-          { q: "Co znajdowało się w złotym zniczu pozostawionym Harry'emu przez Dumbledore'a?", answers: ["Fragment mapy", "Kamień Wskrzeszenia", "Włos feniksa", "Czarna perła"], correct: 1 },
-          { q: "Którego ze swoich nauczycieli Harry jako pierwszy rozbroił zaklęciem Expelliarmus?", answers: ["Snape'a", "Lupina", "Lockharta", "Moody'ego"], correct: 2 }
+          { q: "Jakiej marki miotłę Harry otrzymał od Syriusza po utracie Nimbusa 2000?", answers: ["A) Nimbus 2001", "B) Kometa 290", "C) Błyskawica", "D) Srebrna Strzała"], correct: 2 },
+          { q: "Jak miał na imię mugolski sąsiad Harry'ego, którego Dudley i jego gang regularnie prześladowali?", answers: ["A) Mark Evans", "B) Dennis Creevey", "C) Piers Polkiss", "D) Nigel Wolpert"], correct: 0 },
+          { q: "Co znajdowało się w złotym zniczu pozostawionym Harry'emu przez Dumbledore'a?", answers: ["A) Fragment mapy", "B) Kamień Wskrzeszenia", "C) Włos feniksa", "D) Czarna perła"], correct: 1 },
+          { q: "Którego ze swoich nauczycieli Harry jako pierwszy rozbroił zaklęciem Expelliarmus?", answers: ["A) Snape'a", "B) Lupina", "C) Lockharta", "D) Moody'ego"], correct: 2 }
         ]
       },
       {
@@ -370,10 +375,10 @@
         day: 3,
         icon: "🧪",
         questions: [
-          { q: "Jakie było drugie imię Snape'a?", answers: ["Tobiasz", "Nie posiadał drugiego imienia", "Eileen", "Septimus"], correct: 1 },
-          { q: "Jak miał na imię ojciec Snape'a?", answers: ["Tobias Snape", "Thomas Snape", "Terrence Snape", "Tristan Snape"], correct: 0 },
-          { q: "Jaką nazwę przybrał Snape jako autor notatek w podręczniku eliksirów?", answers: ["Mistrz Eliksirów", "Półkrwi Książę", "Czarny Mag", "Książę Slytherinu"], correct: 1 },
-          { q: "Jakiego zaklęcia Snape użył, aby przeciąć ucho George'a podczas ucieczki z Privet Drive?", answers: ["Sectumsempra", "Diffindo", "Confringo", "Reducto"], correct: 0 }
+          { q: "Jakie było drugie imię Snape'a?", answers: ["A) Tobiasz", "B) Nie posiadał drugiego imienia", "C) Eileen", "D) Septimus"], correct: 1 },
+          { q: "Jak miał na imię ojciec Snape'a?", answers: ["A) Tobias Snape", "B) Thomas Snape", "C) Terrence Snape", "D) Tristan Snape"], correct: 0 },
+          { q: "Jaką nazwę przybrał Snape jako autor notatek w podręczniku eliksirów?", answers: ["A) Mistrz Eliksirów", "B) Półkrwi Książę", "C) Czarny Mag", "D) Książę Slytherinu"], correct: 1 },
+          { q: "Jakiego zaklęcia Snape użył, aby przeciąć ucho George'a podczas ucieczki z Privet Drive?", answers: ["A) Sectumsempra", "B) Diffindo", "C) Confringo", "D) Reducto"], correct: 0 }
         ]
       },
       {
@@ -382,10 +387,10 @@
         day: 4,
         icon: "📚",
         questions: [
-          { q: "Jak nazywał się kot Hermiony?", answers: ["Krzywołap", "Puszek", "Łapa", "Kieł"], correct: 0 },
-          { q: "Ile SUM-ów zdobyła Hermiona?", answers: ["9", "10", "11", "12"], correct: 2 },
-          { q: "W jakiej sytuacji Hermiona pocałowała Rona po raz pierwszy?", answers: ["Była pod wpływem eliksiru miłości.", "Okazało się że Ron tylko udaje że jest biedny a tak naprawdę jest bogatszy od Malfoja.", "Ron okazał się nie być egoistycznym śmieciem, gdyż chciał uratować skrzaty domowe przed walką.", "Nigdy go nie pocałowała bo był rudy."], correct: 2 },
-          { q: "Której książki Hermiona użyła do uwarzenia Eliksiru Wielosokowego w drugiej części?", answers: ["Zaawansowane Warzenie Eliksirów", "Eliksiry dla Zaawansowanych", "Najsilniejsze Mikstury", "Sekrety Czarnej Magii"], correct: 2 }
+          { q: "Jak nazywał się kot Hermiony?", answers: ["A) Krzywołap", "B) Puszek", "C) Łapa", "D) Kieł"], correct: 0 },
+          { q: "Ile SUM-ów zdobyła Hermiona?", answers: ["A) 9", "B) 10", "C) 11", "D) 12"], correct: 2 },
+          { q: "W jakiej sytuacji Hermiona pocałowała Rona po raz pierwszy?", answers: ["A) Była pod wpływem eliksiru miłości.", "B) Okazało się że Ron tylko udaje że jest biedny a tak naprawdę jest bogatszy od Malfoja.", "C) Ron okazał się nie być egoistycznym śmieciem, gdyż chciał uratować skrzaty domowe przed walką.", "D) Nigdy go nie pocałowała bo był rudy."], correct: 2 },
+          { q: "Której książki Hermiona użyła do uwarzenia Eliksiru Wielosokowego w drugiej części?", answers: ["A) Zaawansowane Warzenie Eliksirów", "B) Eliksiry dla Zaawansowanych", "C) Najsilniejsze Mikstury", "D) Sekrety Czarnej Magii"], correct: 2 }
         ]
       },
       {
@@ -394,10 +399,10 @@
         day: 5,
         icon: "🪄",
         questions: [
-          { q: "Jak miał na drugie imię Albus Dumbledore?", answers: ["Brian", "Percival", "Wulfric", "Wszystkie powyższe"], correct: 0 },
-          { q: "Które z poniższych smakołyków było hasłem otwierającym przejście do gabinetu Dumbledore?", answers: ["Cytrynowy Sorbet", "Kociołkowe Pieguski", "Pudding Brzoskwiniowy", "Czekoladowe Żaby"], correct: 0 },
-          { q: "Z kim Dumbledore pokonał Grindelwalda?", answers: ["Samodzielnie", "Razem z Newtem Scamanderem", "Razem z Aberforthem", "Razem z Nicolasem Flamelem"], correct: 0 },
-          { q: "Jaki smak dżemu wspomniał Dumbledore tuż przed śmiercią?", answers: ["Truskawkowy", "Malinowy", "Nie wspomniał żadnego dżemu", "Morelowy"], correct: 2 }
+          { q: "Jak miał na drugie imię Albus Dumbledore?", answers: ["A) Brian", "B) Percival", "C) Wulfric", "D) Wszystkie powyższe"], correct: 0 },
+          { q: "Które z poniższych smakołyków było hasłem otwierającym przejście do gabinetu Dumbledore?", answers: ["A) Cytrynowy Sorbet", "B) Kociołkowe Pieguski", "C) Pudding Brzoskwiniowy", "D) Czekoladowe Żaby"], correct: 0 },
+          { q: "Z kim Dumbledore pokonał Grindelwalda?", answers: ["A) Samodzielnie", "B) Razem z Newtem Scamanderem", "C) Razem z Aberforthem", "D) Razem z Nicolasem Flamelem"], correct: 0 },
+          { q: "Jaki smak dżemu wspomniał Dumbledore tuż przed śmiercią?", answers: ["A) Truskawkowy", "B) Malinowy", "C) Nie wspomniał żadnego dżemu", "D) Morelowy"], correct: 2 }
         ]
       }
     ];
@@ -484,6 +489,8 @@
       document.getElementById('quizModal').style.display = 'none';
     }
 
+    document.getElementById('closeBtn').onclick = closeQuiz;
+
     function renderQuestion() {
       const qData = activeChar.questions[currentQ];
       const modalBody = document.getElementById('modalBody');
@@ -492,17 +499,22 @@
         <h3>${activeChar.name} — Pytanie ${currentQ + 1}/4</h3>
         <div class="question-box">
           <div class="question-title">${qData.q}</div>
-          <div class="options-list">
-            ${qData.answers.map((ans, idx) => `
-              <button class="option-btn" onclick="handleAnswer(${idx})">${ans}</button>
-            `).join('')}
-          </div>
+          <div class="options-list" id="optionsContainer"></div>
         </div>
         <div class="quiz-footer">
           <span>Punkty: ${score}</span>
           <span>Wymagane: 2 min.</span>
         </div>
       `;
+
+      const container = document.getElementById('optionsContainer');
+      qData.answers.forEach((ans, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerText = ans;
+        btn.onclick = () => handleAnswer(idx);
+        container.appendChild(btn);
+      });
     }
 
     function handleAnswer(selectedIdx) {
@@ -537,11 +549,20 @@
               ? 'Udowodniłeś/aś, że płynie w Tobie czarodziejska krew. Kolejny kawałek układanki został odkryty!' 
               : 'Mugolski wynik... Musisz uzyskać minimum 2 poprawne odpowiedzi. Spróbuj ponownie!'}
           </p>
-          <button class="option-btn" style="margin-top:20px; width:100%; text-align:center;" onclick="${passed ? 'closeQuiz()' : 'startQuiz(activeChar)'}">
+          <button class="option-btn" id="actionBtn" style="margin-top:20px; width:100%; text-align:center;">
             ${passed ? 'Odbierz Fragment' : 'Spróbuj Ponownie'}
           </button>
         </div>
       `;
+
+      document.getElementById('actionBtn').onclick = () => {
+        if (passed) {
+          closeQuiz();
+        } else {
+          startQuiz(activeChar);
+        }
+      };
+
       renderApp();
     }
 
