@@ -1,686 +1,563 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Czy aby nie jesteś mugolem?</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Cinzel Decorative, Cormorant Garamond, Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Czy aby nie jesteś mugolem?</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a0c10;
+      --panel-bg: #12161f;
+      --card-bg: #181d28;
+      --accent-green: #1a4d3e;
+      --accent-emerald: #2d8a6e;
+      --gold-dark: #8c733e;
+      --gold-light: #c5a059;
+      --text-light: #d1d5db;
+      --text-dim: #8b949e;
+      --border-dark: #262c3a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+      font-family: 'EB Garamond', serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background-image: 
+        radial-gradient(circle at 50% 0%, #1a2332 0%, transparent 75%),
+        radial-gradient(circle at 50% 100%, #05070a 0%, transparent 100%);
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cinzel', serif;
+      letter-spacing: 1px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      margin-top: 10px;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      color: var(--gold-light);
+      text-shadow: 0 0 10px rgba(197, 160, 89, 0.2);
+      margin-bottom: 8px;
+    }
+
+    header p {
+      color: var(--text-dim);
+      font-style: italic;
+    }
+
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    @media (min-width: 850px) {
+      .main-container {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+      }
+    }
+
+    .puzzle-section {
+      background: var(--panel-bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 8px;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    }
+
+    .puzzle-title {
+      font-size: 1.1rem;
+      color: var(--gold-light);
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .puzzle-container {
+      width: 250px;
+      height: 444px;
+      position: relative;
+      background-color: #000;
+      border: 2px solid var(--gold-dark);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(0,0,0,0.8);
+    }
+
+    .secret-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .puzzle-grid {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .puzzle-piece {
+      flex: 1;
+      width: 100%;
+      background: #0d1117;
+      border-bottom: 1px solid #1a202c;
+      transition: all 0.8s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #38444d;
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      position: relative;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+    }
+
+    .puzzle-piece::before {
+      content: "🔒 Tajemnica " attr(data-index);
+    }
+
+    .puzzle-piece.unlocked {
+      background: transparent !important;
+      border-color: transparent;
+      box-shadow: none;
+    }
+
+    .puzzle-piece.unlocked::before {
+      content: "";
+    }
+
+    .menu-section {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .character-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-dark);
+      border-radius: 6px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .character-card.available {
+      border-color: var(--accent-emerald);
+      cursor: pointer;
+    }
+
+    .character-card.available:hover {
+      background: #1e2534;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(45, 138, 110, 0.2);
+    }
+
+    .character-card.completed {
+      border-color: var(--gold-dark);
+      opacity: 0.8;
+    }
+
+    .character-card.locked {
+      opacity: 0.4;
+      filter: grayscale(80%);
+      cursor: not-allowed;
+    }
+
+    .char-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: #0d1117;
+      border: 1px solid var(--border-dark);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .char-info { flex: 1; }
+    .char-name { font-size: 1.2rem; color: #e5e7eb; }
+    .char-day { font-size: 0.85rem; color: var(--text-dim); }
+
+    .status-badge {
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: 'Cinzel', serif;
+    }
+
+    .badge-locked { background: #222; color: #666; }
+    .badge-ready { background: var(--accent-green); color: #6ee7b7; }
+    .badge-done { background: #3a2e19; color: var(--gold-light); }
+
+    .modal-overlay {
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(5px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: var(--panel-bg);
+      border: 1px solid var(--gold-dark);
+      border-radius: 8px;
+      max-width: 500px;
+      width: 100%;
+      padding: 25px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.9);
+      position: relative;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px; right: 15px;
+      background: none; border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .question-box { margin: 20px 0; }
+    .question-title { font-size: 1.1rem; margin-bottom: 12px; color: #fff; }
+
+    .options-list { display: flex; flex-direction: column; gap: 10px; }
     
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              slytherin: {
-                dark: '#0a100d',
-                bg: '#0f1715',
-                card: '#14221e',
-                accent: '#1e3a34',
-                emerald: '#10b981',
-                gold: '#c5a059',
-                silver: '#a3b18a',
-                border: '#2a443b'
-              }
-            },
-            fontFamily: {
-              header: ['Cinzel Decorative', 'serif'],
-              serif: ['Cormorant Garamond', 'serif'],
-              sans: ['Inter', 'sans-serif'],
-            }
-          }
-        }
-      }
-    </script>
+    .option-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--border-dark);
+      color: var(--text-light);
+      padding: 10px 15px;
+      border-radius: 4px;
+      text-align: left;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.2s;
+    }
 
-    <style>
-      body {
-        background-color: #070a09;
-        background-image: 
-          radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.08) 0%, transparent 60%),
-          radial-gradient(circle at 100% 100%, rgba(197, 160, 89, 0.05) 0%, transparent 50%);
-        color: #d1d5db;
-      }
+    .option-btn:hover { background: #232a3a; border-color: var(--accent-emerald); }
 
-      .text-glow {
-        text-shadow: 0 0 12px rgba(16, 185, 129, 0.3), 0 0 25px rgba(16, 185, 129, 0.1);
-      }
+    .quiz-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
 
-      .text-gold-glow {
-        text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
-      }
+    .quiz-result { text-align: center; padding: 20px 0; }
+    .quiz-result h3 { color: var(--gold-light); margin-bottom: 10px; }
 
-      .emerald-border-glow {
-        box-shadow: 0 0 15px rgba(16, 185, 129, 0.15);
-      }
+    .dev-panel {
+      margin-top: 40px;
+      padding: 15px;
+      background: #080a0d;
+      border: 1px dashed #333;
+      border-radius: 6px;
+      width: 100%;
+      max-width: 900px;
+      font-size: 0.85rem;
+    }
 
-      /* Custom Scrollbar */
-      ::-webkit-scrollbar {
-        width: 6px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #0a100d;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #1e3a34;
-        border-radius: 3px;
-      }
-    </style>
+    .dev-panel summary { cursor: pointer; color: var(--text-dim); }
+    .dev-controls { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
+    .dev-btn { background: #222; color: #ccc; border: 1px solid #444; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
+  </style>
 </head>
-<body class="min-h-screen font-sans antialiased flex flex-col justify-between selection:bg-emerald-900 selection:text-emerald-200">
+<body>
 
-    <header class="w-full py-8 px-4 text-center border-b border-slytherin-border/40 bg-slytherin-dark/80 backdrop-blur-md sticky top-0 z-30">
-        <div class="max-w-4xl mx-auto flex flex-col items-center">
-            <span class="text-xs uppercase tracking-[0.3em] text-slytherin-emerald font-semibold mb-2">Nocturn Alley Edition</span>
-            <h1 class="font-header text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-emerald-200 to-amber-200 text-glow leading-relaxed py-1">
-                Czy aby nie jesteś mugolem?
-            </h1>
-            <p class="font-serif italic text-lg md:text-xl text-gray-400 mt-1 max-w-xl">
-                Tajemnicza próba wiedzy dla czarownic rocznika '89. Rozwiąż zagadki postaci, by odkryć co kryje cień nocy.
-            </p>
+  <header>
+    <h1>Czy aby nie jesteś mugolem?</h1>
+    <p>Pięć prób. Pięć tajemnic. Odkryj sekrety, by poznać prawdę.</p>
+  </header>
+
+  <div class="main-container">
+    <div class="puzzle-section">
+      <div class="puzzle-title">Odkryty Wizerunek</div>
+      <div class="puzzle-container">
+        <img id="secretImage" class="secret-img" src="selfie.png" alt="Obraz Tajemnica">
+        <div class="puzzle-grid">
+          <div class="puzzle-piece" id="piece-0" data-index="1"></div>
+          <div class="puzzle-piece" id="piece-1" data-index="2"></div>
+          <div class="puzzle-piece" id="piece-2" data-index="3"></div>
+          <div class="puzzle-piece" id="piece-3" data-index="4"></div>
+          <div class="puzzle-piece" id="piece-4" data-index="5"></div>
         </div>
-    </header>
+      </div>
+    </div>
 
-    <main class="max-w-6xl mx-auto px-4 py-8 w-full flex-grow grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        <!-- LEFT COLUMN: Image Puzzle Reveal (5 Tiles Vertical) -->
-        <section class="lg:col-span-5 flex flex-col items-center">
-            <div class="w-full max-w-sm bg-slytherin-card p-4 rounded-xl border border-slytherin-border emerald-border-glow">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="font-header text-lg text-emerald-400">Arkanum Obrazu</h2>
-                    <span id="unlocked-count" class="text-xs font-mono bg-slytherin-dark text-slytherin-emerald px-2 py-1 rounded border border-slytherin-border">0 / 5 odkrytych</span>
-                </div>
+    <div class="menu-section" id="cardsList"></div>
+  </div>
 
-                <!-- 5 Vertical Slices Image Container -->
-                <div class="relative w-full aspect-[9/16] rounded-lg overflow-hidden border border-slytherin-border/80 bg-black shadow-2xl flex flex-col" id="puzzle-container">
-                    
-                    <!-- Tile 5 (Top: Head / Face / Headphones) -->
-                    <div class="puzzle-tile relative flex-1 border-b border-black/40 overflow-hidden group" data-tile="5">
-                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 0%;"></div>
-                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
-                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
-                                🔒 Część V
-                            </span>
-                        </div>
-                    </div>
+  <div class="modal-overlay" id="quizModal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeQuiz()">×</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
 
-                    <!-- Tile 4 (Upper Mid: Face / Glasses / Neck) -->
-                    <div class="puzzle-tile relative flex-1 border-b border-black/40 overflow-hidden group" data-tile="4">
-                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 25%;"></div>
-                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
-                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
-                                🔒 Część IV
-                            </span>
-                        </div>
-                    </div>
+  <details class="dev-panel">
+    <summary>🛠️ Panel Testowy (Symulacja dni i reset)</summary>
+    <div class="dev-controls">
+      <button class="dev-btn" onclick="setDevDay(1)">Dzień 1</button>
+      <button class="dev-btn" onclick="setDevDay(2)">Dzień 2</button>
+      <button class="dev-btn" onclick="setDevDay(3)">Dzień 3</button>
+      <button class="dev-btn" onclick="setDevDay(4)">Dzień 4</button>
+      <button class="dev-btn" onclick="setDevDay(5)">Dzień 5</button>
+      <button class="dev-btn" onclick="resetProgress()" style="color:#f87171">Reset Postępu</button>
+    </div>
+  </details>
 
-                    <!-- Tile 3 (Mid: Chest / Polo Shirt) -->
-                    <div class="puzzle-tile relative flex-1 border-b border-black/40 overflow-hidden group" data-tile="3">
-                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 50%;"></div>
-                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
-                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
-                                🔒 Część III
-                            </span>
-                        </div>
-                    </div>
+  <script>
+    const CHARACTERS = [
+      {
+        id: "hagrid",
+        name: "Rubeus Hagrid",
+        day: 1,
+        icon: "🗝️",
+        questions: [
+          { q: "Gdzie Hagrid zdobył smocze jajo w pierwszej części przygód o Harrym?", answers: ["Karczma pod Świńskim Łbem", "Piwnica pod Trzema Miotłami", "Znalazł w lesie", "Sam urodził po swoich legandarnych babeczkach"], correct: 0 },
+          { q: "Gdzie Hagrid trzymał szczątki swojej różdżki?", answers: ["W majtkach", "W płaszczu", "W parasolce", "Nie miał różdżki"], correct: 2 },
+          { q: "Jak na imię miał przyrodni brat Hagrida?", answers: ["Gnat", "Gordin", "Penelopa", "Graup"], correct: 3 },
+          { q: "Za co wyrzucili Hagrida ze szkoły?", answers: ["Za śpiewanie pod prysznicem", "Za podwędzenie wędliny z szkolnej stołówki", "Rasizm na tle wielkościowym", "Został wrobiony w coś czego nie zrobił... Żydy."], correct: 3 }
+        ]
+      },
+      {
+        id: "harry",
+        name: "Harry Potter",
+        day: 2,
+        icon: "⚡",
+        questions: [
+          { q: "Jakiej marki miotłę Harry otrzymał od Syriusza po utracie Nimbusa 2000?", answers: ["Nimbus 2001", "Kometa 290", "Błyskawica", "Srebrna Strzała"], correct: 2 },
+          { q: "Jak miał na imię mugolski sąsiad Harry'ego, którego Dudley i jego gang regularnie prześladowali?", answers: ["Mark Evans", "Dennis Creevey", "Piers Polkiss", "Nigel Wolpert"], correct: 0 },
+          { q: "Co znajdowało się w złotym zniczu pozostawionym Harry'emu przez Dumbledore'a?", answers: ["Fragment mapy", "Kamień Wskrzeszenia", "Włos feniksa", "Czarna perła"], correct: 1 },
+          { q: "Którego ze swoich nauczycieli Harry jako pierwszy rozbroił zaklęciem Expelliarmus?", answers: ["Snape'a", "Lupina", "Lockharta", "Moody'ego"], correct: 2 }
+        ]
+      },
+      {
+        id: "snape",
+        name: "Severus Snape",
+        day: 3,
+        icon: "🧪",
+        questions: [
+          { q: "Jakie było drugie imię Snape'a?", answers: ["Tobiasz", "Nie posiadał drugiego imienia", "Eileen", "Septimus"], correct: 1 },
+          { q: "Jak miał na imię ojciec Snape'a?", answers: ["Tobias Snape", "Thomas Snape", "Terrence Snape", "Tristan Snape"], correct: 0 },
+          { q: "Jaką nazwę przybrał Snape jako autor notatek w podręczniku eliksirów?", answers: ["Mistrz Eliksirów", "Półkrwi Książę", "Czarny Mag", "Książę Slytherinu"], correct: 1 },
+          { q: "Jakiego zaklęcia Snape użył, aby przeciąć ucho George'a podczas ucieczki z Privet Drive?", answers: ["Sectumsempra", "Diffindo", "Confringo", "Reducto"], correct: 0 }
+        ]
+      },
+      {
+        id: "hermione",
+        name: "Hermiona Granger",
+        day: 4,
+        icon: "📚",
+        questions: [
+          { q: "Jak nazywał się kot Hermiony?", answers: ["Krzywołap", "Puszek", "Łapa", "Kieł"], correct: 0 },
+          { q: "Ile SUM-ów zdobyła Hermiona?", answers: ["9", "10", "11", "12"], correct: 2 },
+          { q: "W jakiej sytuacji Hermiona pocałowała Rona po raz pierwszy?", answers: ["Była pod wpływem eliksiru miłości.", "Okazało się że Ron tylko udaje że jest biedny a tak naprawdę jest bogatszy od Malfoja.", "Ron okazał się nie być egoistycznym śmieciem, gdyż chciał uratować skrzaty domowe przed walką.", "Nigdy go nie pocałowała bo był rudy."], correct: 2 },
+          { q: "Której książki Hermiona użyła do uwarzenia Eliksiru Wielosokowego w drugiej części?", answers: ["Zaawansowane Warzenie Eliksirów", "Eliksiry dla Zaawansowanych", "Najsilniejsze Mikstury", "Sekrety Czarnej Magii"], correct: 2 }
+        ]
+      },
+      {
+        id: "dumbledore",
+        name: "Albus Dumbledore",
+        day: 5,
+        icon: "🪄",
+        questions: [
+          { q: "Jak miał na drugie imię Albus Dumbledore?", answers: ["Brian", "Percival", "Wulfric", "Wszystkie powyższe"], correct: 0 },
+          { q: "Które z poniższych smakołyków było hasłem otwierającym przejście do gabinetu Dumbledore?", answers: ["Cytrynowy Sorbet", "Kociołkowe Pieguski", "Pudding Brzoskwiniowy", "Czekoladowe Żaby"], correct: 0 },
+          { q: "Z kim Dumbledore pokonał Grindelwalda?", answers: ["Samodzielnie", "Razem z Newtem Scamanderem", "Razem z Aberforthem", "Razem z Nicolasem Flamelem"], correct: 0 },
+          { q: "Jaki smak dżemu wspomniał Dumbledore tuż przed śmiercią?", answers: ["Truskawkowy", "Malinowy", "Nie wspomniał żadnego dżemu", "Morelowy"], correct: 2 }
+        ]
+      }
+    ];
 
-                    <!-- Tile 2 (Lower Mid: Hands / Phone / Torso) -->
-                    <div class="puzzle-tile relative flex-1 border-b border-black/40 overflow-hidden group" data-tile="2">
-                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 75%;"></div>
-                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
-                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
-                                🔒 Część II
-                            </span>
-                        </div>
-                    </div>
+    let userState = JSON.parse(localStorage.getItem('hp_quiz_state')) || {
+      completed: [],
+      devDayOffset: 0,
+      startDate: new Date().getTime()
+    };
 
-                    <!-- Tile 1 (Bottom: Waist / Trousers) -->
-                    <div class="puzzle-tile relative flex-1 overflow-hidden group" data-tile="1">
-                        <div class="puzzle-img absolute inset-0 bg-cover bg-center transition-all duration-1000 filter blur-xl opacity-10 scale-110" style="background-position: center 100%;"></div>
-                        <div class="puzzle-overlay absolute inset-0 bg-slytherin-dark/95 flex items-center justify-center transition-opacity duration-700">
-                            <span class="font-header text-slytherin-border text-sm tracking-widest uppercase flex items-center gap-2">
-                                🔒 Część I
-                            </span>
-                        </div>
-                    </div>
+    function saveState() {
+      localStorage.setItem('hp_quiz_state', JSON.stringify(userState));
+    }
 
-                </div>
+    function getCurrentDay() {
+      if (userState.devDayOffset > 0) return userState.devDayOffset;
+      const now = new Date().getTime();
+      const diffTime = Math.abs(now - userState.startDate);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+      return diffDays;
+    }
 
-                <p class="text-xs text-center text-gray-500 italic mt-3 font-serif">
-                    Rozwiązuj kolejne etapy pytań, aby odsłonić skrywaną tożsamość postronnego czarodzieja lub mugola, sama oceń...
-                </p>
-            </div>
-        </section>
+    function renderApp() {
+      const currentDay = getCurrentDay();
+      const cardsList = document.getElementById('cardsList');
+      cardsList.innerHTML = '';
 
-        <!-- RIGHT COLUMN: Days Navigation & Quiz Interface -->
-        <section class="lg:col-span-7 flex flex-col gap-6">
-            
-            <!-- Character Cards Tabs -->
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 p-1.5 bg-slytherin-dark rounded-xl border border-slytherin-border" id="days-tabs">
-                <!-- Javascript will inject character cards here -->
-            </div>
+      CHARACTERS.forEach((char, index) => {
+        const isCompleted = userState.completed.includes(char.id);
+        const isDayUnlocked = currentDay >= char.day;
+        const isPreviousCompleted = index === 0 || userState.completed.includes(CHARACTERS[index - 1].id);
+        const isAvailable = isDayUnlocked && isPreviousCompleted && !isCompleted;
 
-            <!-- Quiz Card -->
-            <div class="bg-slytherin-card rounded-xl border border-slytherin-border p-6 shadow-xl relative min-h-[420px] flex flex-col justify-between" id="quiz-card">
-                
-                <div id="quiz-content">
-                    <div class="flex justify-between items-center mb-4 pb-2 border-b border-slytherin-border/50">
-                        <span id="day-badge" class="font-header text-xs tracking-widest text-emerald-400 uppercase">Dzień I</span>
-                        <span id="quiz-progress-text" class="text-xs text-gray-400 font-mono">Pytanie 1 / 4</span>
-                    </div>
+        const card = document.createElement('div');
+        let cardClass = 'character-card ';
+        let badgeHtml = '';
 
-                    <h3 id="question-title" class="font-serif text-2xl text-gray-100 font-semibold mb-6 leading-snug">
-                        Ładowanie pytania...
-                    </h3>
+        if (isCompleted) {
+          cardClass += 'completed';
+          badgeHtml = '<span class="status-badge badge-done">Ukończono</span>';
+        } else if (isAvailable) {
+          cardClass += 'available';
+          badgeHtml = '<span class="status-badge badge-ready">Dostępny</span>';
+          card.onclick = () => startQuiz(char);
+        } else {
+          cardClass += 'locked';
+          const reason = !isDayUnlocked ? `Dzień ${char.day}` : 'Zaliczy poprzednie';
+          badgeHtml = `<span class="status-badge badge-locked">🔒 ${reason}</span>`;
+        }
 
-                    <div id="answers-container" class="space-y-3">
-                        <!-- Javascript injects answers -->
-                    </div>
-                </div>
+        card.className = cardClass;
+        card.innerHTML = `
+          <div class="char-avatar">${char.icon}</div>
+          <div class="char-info">
+            <div class="char-name">${char.name}</div>
+            <div class="char-day">Etap ${char.day} z 5</div>
+          </div>
+          ${badgeHtml}
+        `;
+        cardsList.appendChild(card);
 
-                <!-- Navigation Controls inside Card -->
-                <div class="mt-8 pt-4 border-t border-slytherin-border/50 flex justify-between items-center">
-                    <button id="prev-q-btn" onclick="prevQuestion()" class="px-4 py-2 rounded-lg bg-slytherin-dark hover:bg-slytherin-accent border border-slytherin-border text-xs uppercase tracking-wider text-gray-400 disabled:opacity-30 disabled:cursor-not-allowed transition">
-                        ← Poprzednie
-                    </button>
-                    <button id="next-q-btn" onclick="nextQuestion()" class="px-5 py-2 rounded-lg bg-slytherin-emerald/20 hover:bg-slytherin-emerald/30 border border-slytherin-emerald/50 text-xs font-semibold uppercase tracking-wider text-emerald-300 transition">
-                        Następne →
-                    </button>
-                </div>
+        const piece = document.getElementById(`piece-${index}`);
+        if (isCompleted) {
+          piece.classList.add('unlocked');
+        } else {
+          piece.classList.remove('unlocked');
+        }
+      });
+    }
 
-            </div>
+    let activeChar = null;
+    let currentQ = 0;
+    let score = 0;
 
-            <!-- Lock Info / Status Message -->
-            <div id="status-box" class="p-4 rounded-lg bg-slytherin-dark/60 border border-slytherin-border/60 text-sm text-gray-400 flex items-center justify-between">
-                <span id="status-message">Ukończ obecny etap, by zdobyć fragment pieczęci.</span>
-                <span id="score-indicator" class="font-mono text-emerald-400 font-bold"></span>
-            </div>
+    function startQuiz(char) {
+      activeChar = char;
+      currentQ = 0;
+      score = 0;
+      document.getElementById('quizModal').style.display = 'flex';
+      renderQuestion();
+    }
 
-        </section>
+    function closeQuiz() {
+      document.getElementById('quizModal').style.display = 'none';
+    }
 
-    </main>
+    function renderQuestion() {
+      const qData = activeChar.questions[currentQ];
+      const modalBody = document.getElementById('modalBody');
 
-    <!-- Admin & Reset Bar Footer -->
-    <footer class="w-full py-4 border-t border-slytherin-border/40 bg-slytherin-dark/90 text-xs text-gray-500">
-        <div class="max-w-6xl mx-auto px-4 flex flex-wrap justify-between items-center gap-4">
-            <div class="flex gap-3 items-center">
-                <button onclick="toggleAdminPanel()" class="hover:text-emerald-400 underline transition">
-                    ⚙️ Panel Testowy / Opcje
-                </button>
-                <span>|</span>
-                <button onclick="resetProgress()" class="hover:text-red-400 underline transition">
-                    🔄 Zrestartuj Postęp
-                </button>
-            </div>
-            <span>Stworzone z myślą o wyjątkowych urodzinach 🧙‍♀️</span>
+      modalBody.innerHTML = `
+        <h3>${activeChar.name} — Pytanie ${currentQ + 1}/4</h3>
+        <div class="question-box">
+          <div class="question-title">${qData.q}</div>
+          <div class="options-list">
+            ${qData.answers.map((ans, idx) => `
+              <button class="option-btn" onclick="handleAnswer(${idx})">${ans}</button>
+            `).join('')}
+          </div>
         </div>
-
-        <!-- Admin Panel Dropdown -->
-        <div id="admin-panel" class="hidden max-w-6xl mx-auto px-4 mt-4 pt-4 border-t border-slytherin-border/30 grid grid-cols-1 md:grid-cols-2 gap-4 bg-slytherin-card/50 p-4 rounded-lg">
-            <div>
-                <label class="block mb-1 text-gray-400">Podgląd dowolnego zdjęcia (URL):</label>
-                <div class="flex gap-2">
-                    <input type="text" id="custom-img-url" placeholder="Wklej adres obrazka..." class="flex-1 bg-slytherin-dark border border-slytherin-border rounded px-2 py-1 text-gray-200">
-                    <button onclick="applyCustomImage()" class="px-3 py-1 bg-slytherin-emerald/30 text-emerald-300 rounded border border-slytherin-emerald/50">Zastosuj</button>
-                </div>
-            </div>
-            <div class="flex items-center gap-2">
-                <button onclick="unlockAllDays()" class="px-3 py-1 bg-amber-900/30 text-amber-300 border border-amber-800 rounded hover:bg-amber-800/40 transition">
-                    🔓 Odblokuj Wszystkie Dni (Test)
-                </button>
-            </div>
+        <div class="quiz-footer">
+          <span>Punkty: ${score}</span>
+          <span>Wymagane: 2 min.</span>
         </div>
-    </footer>
+      `;
+    }
 
-    <script>
-        // Default Image (Selfie uploaded)
-        const DEFAULT_IMAGE = 'selfie.png';
-        let currentImageUrl = DEFAULT_IMAGE;
+    function handleAnswer(selectedIdx) {
+      if (selectedIdx === activeChar.questions[currentQ].correct) {
+        score++;
+      }
+      currentQ++;
+      if (currentQ < activeChar.questions.length) {
+        renderQuestion();
+      } else {
+        renderResult();
+      }
+    }
 
-        // Quiz Questions Data (5 Characters in exact sequence)
-        const QUIZ_DATA = [
-            {
-                day: 1,
-                character: "Hagrid",
-                subtitle: "Klucznik i Strażnik Kniei",
-                icon: "🏕️",
-                tileIndex: 1,
-                questions: [
-                    {
-                        q: "Jak wabi się ukochany, choć niezbyt odważny pies Hagrida?",
-                        options: ["Kieł", "Puszek", "Bober", "Hardodziob"],
-                        correct: 0
-                    },
-                    {
-                        q: "W czym Rubeus Hagrid ukrył złamane kawałki swojej dawnej różdżki?",
-                        options: ["W skórzanej torbie", "W różowej parasolce", "W pniu starego dębu", "W kieszeni płaszcza"],
-                        correct: 1
-                    },
-                    {
-                        q: "Jakie stworzenie wykluło się z jaja, które Hagrid wygrał w karty w Świńskim Łbie?",
-                        options: ["Hipogryf", "Smok (Norbert)", "Aromantula", "Testral"],
-                        correct: 1
-                    },
-                    {
-                        q: "Kim była matka Hagrida?",
-                        options: ["Czarownicą czystej krwi", "Olbrzymką o imieniu Fridwulfa", "Wilkołakiem", "Kobieciarką z wioski"],
-                        correct: 1
-                    }
-                ]
-            },
-            {
-                day: 2,
-                character: "Harry",
-                subtitle: "Chłopiec, Który Przeżył",
-                icon: "⚡",
-                tileIndex: 2,
-                questions: [
-                    {
-                        q: "Jaka postać przyjmuje Patronus Harry'ego Pottera?",
-                        options: ["Wilk", "Swojski Pies", "Jeleń", "Feniks"],
-                        correct: 2
-                    },
-                    {
-                        q: "Od kogo Harry otrzymał w tajemnicy najszybszą miotłę – Błyskawicę?",
-                        options: ["Od Albusa Dumbledore'a", "Od Remusa Lupina", "Od Syriusza Blacka", "Od Minervy McGonagall"],
-                        correct: 2
-                    },
-                    {
-                        q: "Na jakiej pozycji grał Harry w reprezentacji Quidditcha Gryffindoru?",
-                        options: ["Ścigający", "Szukający", "Pałkarz", "Obrońca"],
-                        correct: 1
-                    },
-                    {
-                        q: "Jakie stworzenie było pierwszym horkruksem stworzonym nieświadomie przez Voldemorta?",
-                        options: ["Nagini", "Puchar Hufflepuff", "Sam Harry", "Diadem Ravenclaw"],
-                        correct: 2
-                    }
-                ]
-            },
-            {
-                day: 3,
-                character: "Snape",
-                subtitle: "Książę Półkrwi",
-                icon: "🧪",
-                tileIndex: 3,
-                questions: [
-                    {
-                        q: "Jakie jest jedno z najsłynniejszych słów Severusa Snape'a wyrażające miłość do Lily?",
-                        options: ["Zawsze (Always)", "Nigdy", "Na wieki", "Pamiętam"],
-                        correct: 0
-                    },
-                    {
-                        q: "Pod jakim pseudonimem Severus zapisywał swoje ulepszone receptury eliksirów w podręczniku?",
-                        options: ["Czarny Mistrz", "Książę Półkrwi", "Mroczny Alchemik", "Srebrny Wąż"],
-                        correct: 1
-                    },
-                    {
-                        q: "Jakie mroczne zaklęcie tnące zostało wymyślone bezpośrednio przez Snape'a?",
-                        options: ["Sectumsempra", "Avada Kedavra", "Crucio", "Expelliarmus"],
-                        correct: 0
-                    },
-                    {
-                        q: "Jakiej sztuki magicznej Snape uczył Harry'ego, by chronić jego umysł przed Voldemortem?",
-                        options: ["Oklumencji", "Legilimencji", "Transmutacji", "Astromancji"],
-                        correct: 0
-                    }
-                ]
-            },
-            {
-                day: 4,
-                character: "Hermiona",
-                subtitle: "Najwybitniejsza Czarownica",
-                icon: "📚",
-                tileIndex: 4,
-                questions: [
-                    {
-                        q: "Jakiego magicznego przedmiotu używała Hermiona na 3. roku, by uczęszczać na wszystkie zajęcia?",
-                        options: ["Zmieniacza Czasu", "Zwierciadła Ain Eingarp", "Mapy Huncwotów", "Peleryny Niewidki"],
-                        correct: 0
-                    },
-                    {
-                        q: "Jak nazywa się rudy, sprytny kot Hermiony o spłaszczonym pyszczku?",
-                        options: ["Puszek", "Krzywołap", "Norbert", "Kieł"],
-                        correct: 1
-                    },
-                    {
-                        q: "Jaką organizację założyła Hermiona w walce o prawa skrzatów domowych?",
-                        options: ["W.S.P.Ó.Ł.", "S.O.W.T. (SPEW)", "G.A.D.", "Z.O.R.A."],
-                        correct: 1
-                    },
-                    {
-                        q: "Co Hermiona ujrzała w Eliksirze Amortencja (zapach miłości)?",
-                        options: ["Świeżo ściętą trawę, nowy pergamin i włosy Rona", "Zapach czekolady i starej biblioteki", "Zapach prochu i dymu", "Zielone jabłka i zapach deszczu"],
-                        correct: 0
-                    }
-                ]
-            },
-            {
-                day: 5,
-                character: "Dumbledore",
-                subtitle: "Dyrektor Hogwartu",
-                icon: "🔮",
-                tileIndex: 5,
-                questions: [
-                    {
-                        q: "Jak wabi się wierny feniks Albusa Dumbledore'a?",
-                        options: ["Aramis", "Fawkes", "Errol", "Hedwiga"],
-                        correct: 1
-                    },
-                    {
-                        q: "Którą z Insygniów Śmierci Dumbledore zdobył po pojedynku z Grindelwaldem?",
-                        options: ["Kamień Wskrzeszenia", "Czarną Różdżkę", "Przylądek Niewidkę", "Złoty Znicz"],
-                        correct: 1
-                    },
-                    {
-                        q: "Jaki był ulubiony mugolski przysmak Dumbledore'a, stanowiący też hasło do jego gabinetu?",
-                        options: ["Czekoladowe Żaby", "Cytrynki (Kwaśne cytrynki)", "Kociołkowe pieczywo", "Fasolki wszystkich smaków"],
-                        correct: 1
-                    },
-                    {
-                        q: "Co wedle kart z Czekoladowych Żab uchodzi za jedno z najważniejszych odkryć Dumbledore'a?",
-                        options: ["12 zastosowań smoczej krwi", "Wynalezienie Eliksiru Życia", "Odkrycie komety Halleya", "Stworzenie Kamienia Filozoficznego"],
-                        correct: 0
-                    }
-                ]
-            }
-        ];
+    function renderResult() {
+      const passed = score >= 2;
+      const modalBody = document.getElementById('modalBody');
 
-        // State Management
-        let state = {
-            currentDay: 1,
-            currentQuestionIdx: 0,
-            answers: {},
-            unlockedDays: [1],
-            passedDays: []
-        };
-
-        // Render Navigation Cards for Characters
-        function renderDaysTabs() {
-            const tabsContainer = document.getElementById('days-tabs');
-            tabsContainer.innerHTML = '';
-
-            QUIZ_DATA.forEach(d => {
-                const isUnlocked = state.unlockedDays.includes(d.day);
-                const isPassed = state.passedDays.includes(d.day);
-                const isActive = state.currentDay === d.day;
-
-                const btn = document.createElement('button');
-                btn.className = `p-2 rounded-lg font-serif text-left transition duration-200 flex flex-col justify-between ${
-                    isActive 
-                        ? 'bg-slytherin-emerald text-slytherin-dark font-bold shadow-lg ring-1 ring-emerald-300' 
-                        : isUnlocked 
-                            ? 'bg-slytherin-card hover:bg-slytherin-accent text-gray-300 border border-slytherin-border' 
-                            : 'bg-slytherin-dark/40 text-gray-600 border border-slytherin-border/30 cursor-not-allowed opacity-60'
-                }`;
-
-                let statusIcon = isPassed ? '✓' : isUnlocked ? '📖' : '🔒';
-                btn.innerHTML = `
-                    <div class="flex items-center justify-between w-full mb-1">
-                        <span class="text-base">${d.icon}</span>
-                        <span class="text-[10px] font-sans px-1.5 py-0.5 rounded ${isPassed ? 'bg-emerald-900/80 text-emerald-200' : 'bg-black/40 text-gray-400'}">${statusIcon}</span>
-                    </div>
-                    <div>
-                        <div class="text-xs font-bold leading-tight">${d.character}</div>
-                        <div class="text-[9px] opacity-75 font-sans">Etap ${d.day}</div>
-                    </div>
-                `;
-                
-                if (isUnlocked) {
-                    btn.onclick = () => selectDay(d.day);
-                } else {
-                    btn.disabled = true;
-                }
-
-                tabsContainer.appendChild(btn);
-            });
+      if (passed) {
+        if (!userState.completed.includes(activeChar.id)) {
+          userState.completed.push(activeChar.id);
+          saveState();
         }
+      }
 
-        // Select Day
-        function selectDay(dayNum) {
-            state.currentDay = dayNum;
-            state.currentQuestionIdx = 0;
-            saveState();
-            renderDaysTabs();
-            renderQuestion();
-        }
+      modalBody.innerHTML = `
+        <div class="quiz-result">
+          <h3>${passed ? '🎉 Gratulacje!' : '❌ Niestety...'}</h3>
+          <p>Twój wynik: <strong>${score}/4</strong></p>
+          <p style="margin-top:10px; color: var(--text-dim)">
+            ${passed 
+              ? 'Udowodniłeś/aś, że płynie w Tobie czarodziejska krew. Kolejny kawałek układanki został odkryty!' 
+              : 'Mugolski wynik... Musisz uzyskać minimum 2 poprawne odpowiedzi. Spróbuj ponownie!'}
+          </p>
+          <button class="option-btn" style="margin-top:20px; width:100%; text-align:center;" onclick="${passed ? 'closeQuiz()' : 'startQuiz(activeChar)'}">
+            ${passed ? 'Odbierz Fragment' : 'Spróbuj Ponownie'}
+          </button>
+        </div>
+      `;
+      renderApp();
+    }
 
-        // Render Active Question
-        function renderQuestion() {
-            const dayData = QUIZ_DATA.find(d => d.day === state.currentDay);
-            const question = dayData.questions[state.currentQuestionIdx];
+    function setDevDay(day) {
+      userState.devDayOffset = day;
+      saveState();
+      renderApp();
+    }
 
-            // Badge & Title
-            document.getElementById('day-badge').innerText = `${dayData.title}`;
-            document.getElementById('quiz-progress-text').innerText = `Pytanie ${state.currentQuestionIdx + 1} / ${dayData.questions.length}`;
-            document.getElementById('question-title').innerText = question.q;
+    function resetProgress() {
+      userState = { completed: [], devDayOffset: 0, startDate: new Date().getTime() };
+      saveState();
+      renderApp();
+    }
 
-            // Answers List
-            const container = document.getElementById('answers-container');
-            container.innerHTML = '';
-
-            const selectedAnsKey = `${state.currentDay}_${state.currentQuestionIdx}`;
-            const userSelected = state.answers[selectedAnsKey];
-
-            question.options.forEach((opt, idx) => {
-                const isSelected = userSelected === idx;
-                
-                const optionBtn = document.createElement('button');
-                optionBtn.className = `w-full text-left p-4 rounded-lg font-serif text-lg border transition duration-200 flex items-center justify-between ${
-                    isSelected 
-                        ? 'bg-slytherin-emerald/20 border-slytherin-emerald text-emerald-200 font-semibold shadow-md' 
-                        : 'bg-slytherin-dark/60 hover:bg-slytherin-accent/60 border-slytherin-border/70 text-gray-300'
-                }`;
-
-                optionBtn.innerHTML = `
-                    <span class="flex items-center gap-3">
-                        <span class="w-6 h-6 rounded-full border border-slytherin-border flex items-center justify-center text-xs font-sans ${isSelected ? 'border-slytherin-emerald bg-slytherin-emerald text-slytherin-dark font-bold' : 'text-gray-500'}">
-                            ${String.fromCharCode(65 + idx)}
-                        </span>
-                        ${opt}
-                    </span>
-                    ${isSelected ? '<span class="text-slytherin-emerald text-sm">✦</span>' : ''}
-                `;
-
-                optionBtn.onclick = () => answerQuestion(idx);
-                container.appendChild(optionBtn);
-            });
-
-            // Prev / Next Buttons
-            document.getElementById('prev-q-btn').disabled = state.currentQuestionIdx === 0;
-            const isLast = state.currentQuestionIdx === dayData.questions.length - 1;
-            document.getElementById('next-q-btn').innerText = isLast ? 'Sprawdź Etap ✓' : 'Następne →';
-
-            updateStatusMessage();
-        }
-
-        // Handle Answer Selection
-        function answerQuestion(optionIdx) {
-            const key = `${state.currentDay}_${state.currentQuestionIdx}`;
-            state.answers[key] = optionIdx;
-            saveState();
-            renderQuestion();
-            checkAndCalculateDayProgress();
-        }
-
-        // Navigation
-        function prevQuestion() {
-            if (state.currentQuestionIdx > 0) {
-                state.currentQuestionIdx--;
-                renderQuestion();
-            }
-        }
-
-        function nextQuestion() {
-            const dayData = QUIZ_DATA.find(d => d.day === state.currentDay);
-            if (state.currentQuestionIdx < dayData.questions.length - 1) {
-                state.currentQuestionIdx++;
-                renderQuestion();
-            } else {
-                // Finish Day
-                checkAndCalculateDayProgress(true);
-            }
-        }
-
-        // Calculate Progress & Check if 2/4 passed
-        function checkAndCalculateDayProgress(alertUser = false) {
-            const dayData = QUIZ_DATA.find(d => d.day === state.currentDay);
-            let correctCount = 0;
-            let answeredCount = 0;
-
-            dayData.questions.forEach((q, idx) => {
-                const key = `${state.currentDay}_${idx}`;
-                if (state.answers[key] !== undefined) {
-                    answeredCount++;
-                    if (state.answers[key] === q.correct) {
-                        correctCount++;
-                    }
-                }
-            });
-
-            // If passed (>= 2 correct)
-            const passed = correctCount >= 2;
-
-            if (passed && !state.passedDays.includes(state.currentDay)) {
-                state.passedDays.push(state.currentDay);
-                
-                // Unlock next day if exists
-                if (state.currentDay < 5 && !state.unlockedDays.includes(state.currentDay + 1)) {
-                    state.unlockedDays.push(state.currentDay + 1);
-                }
-                saveState();
-                renderDaysTabs();
-                updatePuzzleDisplay();
-            }
-
-            if (alertUser) {
-                if (passed) {
-                    const msg = state.currentDay === 5 
-                        ? "🎉 Gratulacje! Rozwiązałaś cały quiz i całkowicie odkodowałaś tajemniczy obraz!" 
-                        : `✨ Gratulacje! Uzyskałaś ${correctCount}/4 poprawnych odpowiedzi. Następny etap i fragment obrazu został odblokowany!`;
-                    alert(msg);
-                } else {
-                    alert(`Potrzebujesz co najmniej 2 poprawnych odpowiedzi (Obecnie: ${correctCount}/4). Spróbuj ponownie zmienić odpowiedzi!`);
-                }
-            }
-
-            updateStatusMessage(correctCount, dayData.questions.length);
-        }
-
-        // Status Bar Update
-        function updateStatusMessage(correct, total) {
-            const dayData = QUIZ_DATA.find(d => d.day === state.currentDay);
-            let correctCount = 0;
-            let answeredCount = 0;
-
-            dayData.questions.forEach((q, idx) => {
-                const key = `${state.currentDay}_${idx}`;
-                if (state.answers[key] !== undefined) {
-                    answeredCount++;
-                    if (state.answers[key] === q.correct) {
-                        correctCount++;
-                    }
-                }
-            });
-
-            const statusElem = document.getElementById('status-message');
-            const scoreElem = document.getElementById('score-indicator');
-
-            scoreElem.innerText = `Wynik: ${correctCount}/${dayData.questions.length}`;
-
-            if (state.passedDays.includes(state.currentDay)) {
-                statusElem.innerText = "✦ Etap Zaliczony! Fragment obrazu rozświetlony.";
-                statusElem.className = "text-emerald-400 font-semibold flex items-center gap-1";
-            } else if (answeredCount === dayData.questions.length) {
-                statusElem.innerText = "⚠️ Odpowiedziano na wszystkie pytania. Wymagane min. 2/4.";
-                statusElem.className = "text-amber-400";
-            } else {
-                statusElem.innerText = "Wybierz odpowiedzi na wszystkie pytania w tym etapie.";
-                statusElem.className = "text-gray-400";
-            }
-        }
-
-        // Update Puzzle Display
-        function updatePuzzleDisplay() {
-            let unlockedTotal = 0;
-
-            QUIZ_DATA.forEach(d => {
-                const isPassed = state.passedDays.includes(d.day);
-                const tileElem = document.querySelector(`.puzzle-tile[data-tile="${d.tileIndex}"]`);
-                
-                if (tileElem) {
-                    const imgDiv = tileElem.querySelector('.puzzle-img');
-                    const overlayDiv = tileElem.querySelector('.puzzle-overlay');
-
-                    if (isPassed) {
-                        unlockedTotal++;
-                        imgDiv.classList.remove('blur-xl', 'opacity-10', 'scale-110');
-                        imgDiv.classList.add('blur-none', 'opacity-100', 'scale-100');
-                        overlayDiv.classList.add('opacity-0', 'pointer-events-none');
-                    } else {
-                        imgDiv.classList.add('blur-xl', 'opacity-10', 'scale-110');
-                        imgDiv.classList.remove('blur-none', 'opacity-100', 'scale-100');
-                        overlayDiv.classList.remove('opacity-0', 'pointer-events-none');
-                    }
-                }
-            });
-
-            document.getElementById('unlocked-count').innerText = `${unlockedTotal} / 5 odkrytych`;
-        }
-
-        // Apply Image Source to Puzzle Divs
-        function updateImagePuzzleSources() {
-            const imgDivs = document.querySelectorAll('.puzzle-img');
-            imgDivs.forEach(div => {
-                div.style.backgroundImage = `url('${currentImageUrl}')`;
-            });
-        }
-
-        // Admin Panel Controls
-        function toggleAdminPanel() {
-            const panel = document.getElementById('admin-panel');
-            panel.classList.toggle('hidden');
-        }
-
-        function applyCustomImage() {
-            const url = document.getElementById('custom-img-url').value.trim();
-            if (url) {
-                currentImageUrl = url;
-                updateImagePuzzleSources();
-                alert('Podmieniono url obrazu!');
-            }
-        }
-
-        function unlockAllDays() {
-            state.unlockedDays = [1, 2, 3, 4, 5];
-            state.passedDays = [1, 2, 3, 4, 5];
-            saveState();
-            renderDaysTabs();
-            renderQuestion();
-            updatePuzzleDisplay();
-            alert('Odblokowano wszystkie 5 dni i ujawniono cały obraz!');
-        }
-
-        function resetProgress() {
-            if (confirm("Czy na pewno chcesz zrestartować cały postęp quizu?")) {
-                localStorage.removeItem('hp_birthday_quest_state_v2');
-                state = {
-                    currentDay: 1,
-                    currentQuestionIdx: 0,
-                    answers: {},
-                    unlockedDays: [1],
-                    passedDays: []
-                };
-                saveState();
-                renderDaysTabs();
-                renderQuestion();
-                updatePuzzleDisplay();
-            }
-        }
-    </script>
+    renderApp();
+  </script>
 </body>
 </html>
