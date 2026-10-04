@@ -306,7 +306,6 @@
     .quiz-result { text-align: center; padding: 20px 0; }
     .quiz-result h3 { color: var(--gold-light); margin-bottom: 10px; }
 
-    /* Modal powiększenia zdjęcia */
     .image-modal-content {
       max-width: 90vw;
       max-height: 90vh;
@@ -327,21 +326,6 @@
       box-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
       object-fit: contain;
     }
-
-    .dev-panel {
-      margin-top: 40px;
-      padding: 15px;
-      background: #080a0d;
-      border: 1px dashed #333;
-      border-radius: 6px;
-      width: 100%;
-      max-width: 900px;
-      font-size: 0.85rem;
-    }
-
-    .dev-panel summary { cursor: pointer; color: var(--text-dim); }
-    .dev-controls { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 10px; }
-    .dev-btn { background: #222; color: #ccc; border: 1px solid #444; padding: 5px 10px; border-radius: 3px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -385,19 +369,10 @@
     </div>
   </div>
 
-  <details class="dev-panel">
-    <summary>🛠️ Panel Testowy (Symulacja dni i reset)</summary>
-    <div class="dev-controls">
-      <button class="dev-btn" onclick="setDevDay(1)">Dzień 1</button>
-      <button class="dev-btn" onclick="setDevDay(2)">Dzień 2</button>
-      <button class="dev-btn" onclick="setDevDay(3)">Dzień 3</button>
-      <button class="dev-btn" onclick="setDevDay(4)">Dzień 4</button>
-      <button class="dev-btn" onclick="setDevDay(5)">Dzień 5</button>
-      <button class="dev-btn" onclick="resetProgress()" style="color:#f87171">Reset Postępu</button>
-    </div>
-  </details>
-
   <script>
+    // Data startowa wydarzenia: 05 Października 2026
+    const START_DATE = new Date("2026-10-05T00:00:00");
+
     const CHARACTERS = [
       {
         id: "hagrid",
@@ -462,9 +437,7 @@
     ];
 
     let userState = JSON.parse(localStorage.getItem('hp_quiz_state')) || {
-      completed: [],
-      devDayOffset: 0,
-      startDate: new Date().getTime()
+      completed: []
     };
 
     function saveState() {
@@ -472,9 +445,9 @@
     }
 
     function getCurrentDay() {
-      if (userState.devDayOffset > 0) return userState.devDayOffset;
-      const now = new Date().getTime();
-      const diffTime = Math.abs(now - userState.startDate);
+      const now = new Date();
+      const diffTime = now - START_DATE;
+      if (diffTime < 0) return 0; // Przed startem
       const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
       return diffDays;
     }
@@ -503,7 +476,7 @@
           card.onclick = () => startQuiz(char);
         } else {
           cardClass += 'locked';
-          const reason = !isDayUnlocked ? `Dzień ${char.day}` : 'Zaliczy poprzednie';
+          const reason = !isDayUnlocked ? `Otwarcie 0${char.day + 4}.10` : 'Zalicz poprzednie';
           badgeHtml = `<span class="status-badge badge-locked">🔒 ${reason}</span>`;
         }
 
@@ -651,18 +624,6 @@
         }
       };
 
-      renderApp();
-    }
-
-    function setDevDay(day) {
-      userState.devDayOffset = day;
-      saveState();
-      renderApp();
-    }
-
-    function resetProgress() {
-      userState = { completed: [], devDayOffset: 0, startDate: new Date().getTime() };
-      saveState();
       renderApp();
     }
 
