@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magiczna Niespodzianka Urodzinowa ⚡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        potter: {
+                            gold: '#d4af37',
+                            darkGold: '#aa820a',
+                            burgundy: '#740001',
+                            darkNavy: '#0a0d14',
+                            cardBg: 'rgba(22, 27, 38, 0.85)',
+                            goldGlow: 'rgba(212, 175, 55, 0.3)'
+                        }
+                    },
+                    fontFamily: {
+                        magic: ['Cinzel', 'serif'],
+                        sans: ['Montserrat', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0a0d14;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(116, 0, 1, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(212, 175, 55, 0.1) 0%, transparent 40%);
+            background-attachment: fixed;
+        }
+
+        .gold-border {
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        .gold-text-glow {
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .puzzle-overlay {
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .puzzle-overlay.unlocked {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.9) rotate(2deg);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0d14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="text-gray-200 font-sans min-h-screen flex flex-col justify-between p-3 sm:p-6 select-none">
+
+    <header class="text-center my-4 sm:my-8">
+        <h1 class="font-magic text-3xl sm:text-5xl font-extrabold text-potter-gold gold-text-glow mb-2 tracking-wider">
+            ⚡ Magiczna Misja Urodzinowa ⚡
+        </h1>
+        <p class="text-sm sm:text-base text-gray-400 max-w-xl mx-auto italic font-light px-4">
+            Witaj w tajemniczym wyzwaniu! Rozwiązuj codzienne quizy wiedzy o świecie magii, aby stopniowo odkrywać ukryte zdjęcie niespodziankę.
+        </p>
+    </header>
+
+    <main class="max-w-5xl mx-auto w-full space-y-10">
+        
+        <!-- Section: Secret Photo Puzzle -->
+        <section class="bg-potter-cardBg p-4 sm:p-6 rounded-2xl gold-border backdrop-blur-md">
+            <div class="text-center mb-4">
+                <h2 class="font-magic text-xl sm:text-2xl text-potter-gold font-bold">Magiczne Zdjęcie Niespodzianka</h2>
+                <p class="text-xs sm:text-sm text-gray-400">Odkrywaj kolejne fragmenty zaliczając quizy postaci</p>
+            </div>
+
+            <!-- Puzzle Container -->
+            <div class="relative w-full max-w-md mx-auto aspect-[4/3] rounded-xl overflow-hidden border-2 border-potter-gold shadow-2xl bg-black">
+                <!-- Secret Image Underneath -->
+                <img id="secretImage" 
+                     src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop" 
+                     alt="Tajemnicza Niespodzianka" 
+                     class="absolute inset-0 w-full h-full object-cover">
+
+                <!-- Grid of 5 Puzzle Pieces -->
+                <div class="absolute inset-0 grid grid-cols-6 grid-rows-2 gap-1 p-1 bg-black/40 backdrop-blur-[1px]">
+                    <!-- Piece 1: Hagrid (Top Left) -->
+                    <div id="puzzle-0" class="puzzle-overlay col-span-2 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
+                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">I</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Hagrid</span>
+                    </div>
+
+                    <!-- Piece 2: Harry (Top Middle) -->
+                    <div id="puzzle-1" class="puzzle-overlay col-span-2 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
+                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">II</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Harry</span>
+                    </div>
+
+                    <!-- Piece 3: Snape (Top Right) -->
+                    <div id="puzzle-2" class="puzzle-overlay col-span-2 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
+                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">III</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Snape</span>
+                    </div>
+
+                    <!-- Piece 4: Hermione (Bottom Left 3 cols) -->
+                    <div id="puzzle-3" class="puzzle-overlay col-span-3 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
+                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">IV</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Hermiona</span>
+                    </div>
+
+                    <!-- Piece 5: Dumbledore (Bottom Right 3 cols) -->
+                    <div id="puzzle-4" class="puzzle-overlay col-span-3 row-span-1 bg-gradient-to-br from-stone-900 to-black border border-potter-gold/30 rounded flex flex-col items-center justify-center p-2 text-center shadow-lg">
+                        <span class="text-potter-gold font-magic font-bold text-lg sm:text-xl">V</span>
+                        <span class="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Dumbledore</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Characters Roadmap -->
+        <section class="space-y-4">
+            <h2 class="font-magic text-xl sm:text-2xl text-center text-potter-gold font-bold mb-6">
+                Wybierz Etap Quizu
+            </h2>
+
+            <div id="characterCardsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <!-- Cards generated via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 bg-black/80 backdrop-blur-md hidden z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-potter-cardBg gold-border rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl my-8 max-h-[90vh] flex flex-col justify-between">
+            
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-potter-gold text-2xl font-bold transition">
+                ✕
+            </button>
+
+            <div>
+                <div class="flex items-center space-x-4 border-b border-potter-gold/30 pb-4 mb-6">
+                    <img id="modalCharImg" src="" alt="Postać" class="w-14 h-14 rounded-full object-cover border-2 border-potter-gold">
+                    <div>
+                        <h3 id="modalCharName" class="font-magic text-2xl font-bold text-potter-gold">Quiz</h3>
+                        <p class="text-xs text-gray-400">Odpowiedz poprawnie na co najmniej 2 pytania</p>
+                    </div>
+                </div>
+
+                <!-- Questions Container -->
+                <div id="questionsContainer" class="space-y-6 overflow-y-auto max-h-[50vh] pr-2">
+                    <!-- Dynamic Question Content -->
+                </div>
+            </div>
+
+            <!-- Modal Footer Controls -->
+            <div class="mt-6 pt-4 border-t border-potter-gold/30 flex justify-end space-x-3">
+                <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-sm font-semibold border border-gray-600 text-gray-300 hover:bg-gray-800 transition">
+                    Anuluj
+                </button>
+                <button onclick="submitQuiz()" class="px-6 py-2 rounded-lg text-sm font-bold bg-potter-gold text-black hover:bg-yellow-400 shadow-lg transition">
+                    Sprawdź Odpowiedzi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Alert Modal -->
+    <div id="resultModal" class="fixed inset-0 bg-black/85 backdrop-blur-md hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-potter-cardBg gold-border rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl">
+            <div id="resultIcon" class="text-5xl">⚡</div>
+            <h3 id="resultTitle" class="font-magic text-2xl font-bold text-potter-gold"></h3>
+            <p id="resultText" class="text-gray-300 text-sm leading-relaxed"></p>
+            <div id="passwordBadge" class="hidden bg-potter-burgundy/40 border border-potter-gold p-3 rounded-lg text-potter-gold font-mono text-sm"></div>
+            <button onclick="closeResultModal()" class="w-full py-2.5 rounded-lg font-bold bg-potter-gold text-black hover:bg-yellow-400 transition">
+                Kontynuuj
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer & Developer Panel -->
+    <footer class="mt-12 text-center text-xs text-gray-500 border-t border-potter-gold/20 pt-6 pb-2 space-y-3">
+        <p>Stworzone z magią dla wyjątkowej osoby ✨</p>
+        
+        <div class="flex justify-center items-center space-x-4">
+            <button onclick="toggleDevPanel()" class="text-gray-600 hover:text-potter-gold underline transition">
+                🛠️ Panel Twórcy / Testowy
+            </button>
+        </div>
+
+        <div id="devPanel" class="hidden max-w-md mx-auto p-4 bg-stone-900 border border-gray-700 rounded-xl space-y-3 text-left">
+            <h4 class="font-bold text-potter-gold text-sm border-b border-gray-700 pb-1">Ustawienia Testowe (Widoczne tylko dla Ciebie):</h4>
+            
+            <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Data Startu Wyzwania (Dzień 1):</label>
+                <input type="date" id="startDateInput" onchange="updateStartDate(this.value)" class="bg-black border border-gray-700 text-white rounded p-1 text-xs w-full">
+            </div>
+
+            <div>
+                <label class="block text-[11px] text-gray-400 mb-1">Link do Zdjęcia Niespodzianki:</label>
+                <input type="text" id="customImgInput" placeholder="Wklej adres obrazka..." onchange="updateCustomImage(this.value)" class="bg-black border border-gray-700 text-white rounded p-1 text-xs w-full">
+            </div>
+
+            <div class="flex space-x-2 pt-2">
+                <button onclick="unlockAllDev()" class="flex-1 py-1 bg-green-900 hover:bg-green-800 text-green-200 rounded text-[11px] font-bold">
+                    Odblokuj Wszystko
+                </button>
+                <button onclick="resetProgress()" class="flex-1 py-1 bg-red-900 hover:bg-red-800 text-red-200 rounded text-[11px] font-bold">
+                    Zresetuj Postęp
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA STRUCTURE ---
+        const CHARACTERS = [
+            {
+                id: 'hagrid',
+                dayOffset: 0, // Day 1
+                name: 'Rubeus Hagrid',
+                role: 'Strażnik Kluczy',
+                img: 'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=400&auto=format&fit=crop',
+                password: 'ALOHOMORA_STAWOPUSZCZ',
+                questions: [
+                    { q: 'Jakie stworzenie Hagrid wyhodował potajemnie w I tomie?', options: ['Aragog', 'Norbert (Norberta)', 'Kieł', 'Puszek'], correct: 1 },
+                    { q: 'Czym zajmuje się Hagrid w Hogwarcie?', options: ['Nauczyciel Eliksirów', 'Strażnik Kluczy i Terenów', 'Woźny', 'Bibliotekarz'], correct: 1 },
+                    { q: 'Jak ma na imię ukochany pies Hagrida?', options: ['Kieł', 'Puszek', 'Pazur', 'Bucky'], correct: 0 },
+                    { q: 'Z czego zrobiona była czarodziejska różdżka Hagrida ukryta w parasolu?', options: ['Z dębu', 'Z ostrokrzewu', 'Z czarnego bzu', 'Z cisowej gałęzi'], correct: 0 }
+                ]
+            },
+            {
+                id: 'harry',
+                dayOffset: 1, // Day 2
+                name: 'Harry Potter',
+                role: 'Chłopiec, Który Przeżył',
+                img: 'https://images.unsplash.com/photo-1618944847023-38aa001235f0?q=80&w=400&auto=format&fit=crop',
+                password: 'EXPELIAMUS_ZŁOTY_ZNICZ',
+                questions: [
+                    { q: 'Jaką pozycję zajmuje Harry w drużynie Quidditcha Gryffindoru?', options: ['Obrońca', 'Ścigający', 'Szukający', 'Pałkarz'], correct: 2 },
+                    { q: 'Jaką postać przybiera Patronus Harrego?', options: ['Pies', 'Jeleń', 'Otter (Wydra)', 'Sokół'], correct: 1 },
+                    { q: 'Jaki rdzeń posiada różdżka Harrego?', options: ['Włos z ogona jednorożca', 'Włókno z serca smoka', 'Pióro feniksa', 'Włos z wili'], correct: 2 },
+                    { q: 'Kto był ojcem chrzestnym Harrego?', options: ['Remus Lupin', 'Syriusz Black', 'Albus Dumbledore', 'Severus Snape'], correct: 1 }
+                ]
+            },
+            {
+                id: 'snape',
+                dayOffset: 2, // Day 3
+                name: 'Severus Snape',
+                role: 'Mistrz Eliksirów',
+                img: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=400&auto=format&fit=crop',
+                password: 'ALWAYS_ZWKŁOŚĆ_I_MAGIA',
+                questions: [
+                    { q: 'Jakiego przedmiotu Snape najbardziej pragnął uczyć?', options: ['Obrona Przed Czarną Magią', 'Eliksiry', 'Zielarstwo', 'Transfiguracja'], correct: 0 },
+                    { q: 'Jak brzmiał pseudonim Severusa z czasów szkolnych?', options: ['Książę Półkrwi', 'Lunatyk', 'Rogacz', 'Szapa'], correct: 0 },
+                    { q: 'Jaki Patronus należał do Severusa Snape’a?', options: ['Łania', 'Wilk', 'Wąż', 'Kruk'], correct: 0 },
+                    { q: 'Dom, którego Snape był opiekunem w Hogwarcie to:', options: ['Ravenclaw', 'Slytherin', 'Hufflepuff', 'Gryffindor'], correct: 1 }
+                ]
+            },
+            {
+                id: 'hermione',
+                dayOffset: 3, // Day 4
+                name: 'Hermiona Granger',
+                role: 'Najjaśniejsza Czarownica',
+                img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=400&auto=format&fit=crop',
+                password: 'WINGARDIUM_LEVIOSA_SERCE',
+                questions: [
+                    { q: 'Czym wyróżniała się Hermiona na trzecim roku studiów?', options: ['Latała na miotle najlepiej w szkole', 'Używała Zmieniacza Czasu', 'Była animagiem', 'Mówiła mową wężów'], correct: 1 },
+                    { q: 'Jak wabił się kot Hermiony?', options: ['Pani Norris', 'Krzywołap', 'Puszek', 'Nagini'], correct: 1 },
+                    { q: 'Jaki był Patronus Hermiony?', options: ['Wydra', 'Zając', 'Łabędź', 'Kot'], correct: 0 },
+                    { q: 'Jak nazywała się organizacja założona przez Hermionę na rzecz Skrzatów?', options: ['W.S.P.O.M.O.G.A.', 'W.S.P.I.E.R.A.J.', 'S.P.E.W. (S.P.E.K.O.R.)', 'G.A.L.O.P.'], correct: 2 }
+                ]
+            },
+            {
+                id: 'dumbledore',
+                dayOffset: 4, // Day 5
+                name: 'Albus Dumbledore',
+                role: 'Dyrektor Hogwartu',
+                img: 'https://images.unsplash.com/photo-1514539079130-25950c84af65?q=80&w=400&auto=format&fit=crop',
+                password: 'LUMOS_SPEŁNIENIE_MARZEŃ',
+                questions: [
+                    { q: 'Jak nazywał się feniks Dumbledore’a?', options: ['Fawkes', 'Errol', 'Hedwiga', 'Arax'], correct: 0 },
+                    { q: 'Jaki słodki przysmak Dumbledore uwielbiał i używał jako hasła?', options: ['Czekoladowe żaby', 'Cytrynowe dropsy', 'Fasolki wszystkich smaków', 'Kociołkowe pieczywo'], correct: 1 },
+                    { q: 'Z kim Dumbledore stoczył słynny pojedynek w 1945 roku?', options: ['Voldemortem', 'Gellertem Grindelwaldem', 'Luciuszym Malfoyem', 'Severusem Snapem'], correct: 1 },
+                    { q: 'Którą z Insygniów Śmierci Dumbledore posiadał przez lata?', options: ['Pelerynę Niewidkę', 'Czarną Różdżkę', 'Kamień Wskrzeszenia', 'Miskę Wspomnień'], correct: 1 }
+                ]
+            }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let startDate = localStorage.getItem('hp_quiz_startDate') || new Date().toISOString().split('T')[0];
+        let completedQuizzes = JSON.parse(localStorage.getItem('hp_quiz_completed') || '[]');
+        let customImage = localStorage.getItem('hp_quiz_customImage') || '';
+        let currentQuizIndex = null;
+
+        // --- STREAMING_CHUNK:App Initialization logic... ---
+        window.onload = function() {
+            if (!localStorage.getItem('hp_quiz_startDate')) {
+                localStorage.setItem('hp_quiz_startDate', startDate);
+            }
+            document.getElementById('startDateInput').value = startDate;
+            
+            if (customImage) {
+                document.getElementById('secretImage').src = customImage;
+                document.getElementById('customImgInput').value = customImage;
+            }
+
+            renderCards();
+            updatePuzzleGrid();
+        };
+
+        // --- CORE FUNCTIONS ---
+        function getDaysPassed() {
+            const start = new Date(startDate);
+            const today = new Date();
+            start.setHours(0,0,0,0);
+            today.setHours(0,0,0,0);
+            const diffTime = today - start;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function isCharacterUnlocked(index) {
+            const daysPassed = getDaysPassed();
+            const dayReached = daysPassed >= CHARACTERS[index].dayOffset;
+            const previousCompleted = index === 0 || completedQuizzes.includes(CHARACTERS[index - 1].id);
+            return dayReached && previousCompleted;
+        }
+
+        // --- RENDER CARDS ---
+        function renderCards() {
+            const container = document.getElementById('characterCardsContainer');
+            container.innerHTML = '';
+
+            CHARACTERS.forEach((char, index) => {
+                const unlocked = isCharacterUnlocked(index);
+                const completed = completedQuizzes.includes(char.id);
+
+                const card = document.createElement('div');
+                card.className = `relative rounded-xl p-4 flex flex-col items-center text-center transition-all duration-300 border backdrop-blur-md ${
+                    completed 
+                        ? 'bg-potter-burgundy/20 border-potter-gold/60 shadow-lg shadow-potter-gold/10' 
+                        : unlocked 
+                            ? 'bg-potter-cardBg hover:bg-stone-800 border-potter-gold/40 hover:border-potter-gold cursor-pointer hover:scale-105 shadow-md' 
+                            : 'bg-stone-900/60 border-stone-800 opacity-60 cursor-not-allowed'
+                }`;
+
+                card.onclick = () => handleCardClick(index);
+
+                card.innerHTML = `
+                    <div class="relative w-20 h-20 mb-3">
+                        <img src="${char.img}" alt="${char.name}" class="w-full h-full object-cover rounded-full border-2 ${unlocked ? 'border-potter-gold' : 'border-gray-600 grayscale'}">
+                        ${completed ? '<span class="absolute bottom-0 right-0 bg-potter-gold text-black rounded-full text-xs w-6 h-6 flex items-center justify-center font-bold">✓</span>' : ''}
+                        ${!unlocked ? '<span class="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center text-xl">🔒</span>' : ''}
+                    </div>
+
+                    <span class="text-[10px] uppercase font-bold text-potter-gold tracking-widest mb-1">Dzień ${char.dayOffset + 1}</span>
+                    <h3 class="font-magic font-bold text-base text-white mb-1">${char.name}</h3>
+                    <p class="text-[11px] text-gray-400 mb-3">${char.role}</p>
+
+                    <div class="mt-auto w-full">
+                        ${completed 
+                            ? '<span class="text-xs text-potter-gold font-semibold">Ukończony ✨</span>' 
+                            : unlocked 
+                                ? '<button class="w-full py-1.5 bg-potter-gold/20 hover:bg-potter-gold hover:text-black border border-potter-gold text-potter-gold text-xs font-bold rounded transition">Rozpocznij</button>' 
+                                : `<span class="text-[11px] text-gray-500">Zablokowany</span>`
+                        }
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // --- PUZZLE GRID UPDATE ---
+        function updatePuzzleGrid() {
+            CHARACTERS.forEach((char, index) => {
+                const piece = document.getElementById(`puzzle-${index}`);
+                if (piece) {
+                    if (completedQuizzes.includes(char.id)) {
+                        piece.classList.add('unlocked');
+                    } else {
+                        piece.classList.remove('unlocked');
+                    }
+                }
+            });
+        }
+
+        // --- INTERACTION HANDLERS ---
+        function handleCardClick(index) {
+            const char = CHARACTERS[index];
+            const daysPassed = getDaysPassed();
+            
+            if (completedQuizzes.includes(char.id)) {
+                showResultModal('⚡ Quiz Ukończony', `Już rozwiązałaś quiz dotyczący postaci ${char.name}! Hasło odblokowane:`, char.password);
+                return;
+            }
+
+            if (!isCharacterUnlocked(index)) {
+                if (daysPassed < char.dayOffset) {
+                    showResultModal('⏳ Magiczna Blokada Czasu', `Ten quiz odblokuje się w Dniu ${char.dayOffset + 1}! Wróć jutro, aby kontynuować przygodę.`);
+                } else {
+                    showResultModal('🔒 Kolejność Wymagana', `Musisz najpierw ukończyć poprzedni quiz, aby odblokować wyzwanie z postacią: ${char.name}!`);
+                }
+                return;
+            }
+
+            openQuizModal(index);
+        }
+
+        // --- STREAMING_CHUNK:Quiz Modal logic... ---
+        function openQuizModal(index) {
+            currentQuizIndex = index;
+            const char = CHARACTERS[index];
+
+            document.getElementById('modalCharImg').src = char.img;
+            document.getElementById('modalCharName').innerText = `Quiz: ${char.name}`;
+
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+
+            char.questions.forEach((qObj, qIdx) => {
+                const qBox = document.createElement('div');
+                qBox.className = 'bg-black/30 p-4 rounded-xl border border-potter-gold/20 space-y-3';
+                
+                let optionsHTML = '';
+                qObj.options.forEach((opt, oIdx) => {
+                    optionsHTML += `
+                        <label class="flex items-center space-x-3 p-2 rounded-lg bg-stone-900/50 hover:bg-potter-gold/10 border border-transparent hover:border-potter-gold/30 cursor-pointer transition text-sm">
+                            <input type="radio" name="question_${qIdx}" value="${oIdx}" class="accent-potter-gold">
+                            <span class="text-gray-300">${opt}</span>
+                        </label>
+                    `;
+                });
+
+                qBox.innerHTML = `
+                    <p class="font-semibold text-sm text-potter-gold">${qIdx + 1}. ${qObj.q}</p>
+                    <div class="space-y-1.5">${optionsHTML}</div>
+                `;
+
+                container.appendChild(qBox);
+            });
+
+            document.getElementById('quizModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('quizModal').classList.add('hidden');
+            currentQuizIndex = null;
+        }
+
+        function submitQuiz() {
+            if (currentQuizIndex === null) return;
+            const char = CHARACTERS[currentQuizIndex];
+            let score = 0;
+
+            char.questions.forEach((qObj, qIdx) => {
+                const selected = document.querySelector(`input[name="question_${qIdx}"]:checked`);
+                if (selected && parseInt(selected.value) === qObj.correct) {
+                    score++;
+                }
+            });
+
+            closeModal();
+
+            if (score >= 2) {
+                // Success
+                if (!completedQuizzes.includes(char.id)) {
+                    completedQuizzes.push(char.id);
+                    localStorage.setItem('hp_quiz_completed', JSON.stringify(completedQuizzes));
+                }
+
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 }
+                });
+
+                renderCards();
+                updatePuzzleGrid();
+
+                showResultModal(
+                    '🎉 Gratulacje! Zadanie Wykonane',
+                    `Twój wynik to ${score}/4! Odblokowujesz nowy fragment zdjęcia niespodzianki oraz zdobywasz sekretne hasło:`,
+                    char.password
+                );
+            } else {
+                // Fail
+                showResultModal(
+                    '❌ Spróbuj Ponownie',
+                    `Twój wynik to ${score}/4. Aby przejść dalej i odkryć puzzle, musisz odpowiedzieć poprawnie na co najmniej 2 pytania. Przeczytaj pytania uważnie i spróbuj jeszcze raz!`
+                );
+            }
+        }
+
+        // --- RESULT MODAL ---
+        function showResultModal(title, text, password = null) {
+            document.getElementById('resultTitle').innerText = title;
+            document.getElementById('resultText').innerText = text;
+            
+            const badge = document.getElementById('passwordBadge');
+            if (password) {
+                badge.innerText = `🔑 Hasło: ${password}`;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            document.getElementById('resultModal').classList.remove('hidden');
+        }
+
+        function closeResultModal() {
+            document.getElementById('resultModal').classList.add('hidden');
+        }
+
+        // --- STREAMING_CHUNK:Developer tools & testing helpers... ---
+        function toggleDevPanel() {
+            const panel = document.getElementById('devPanel');
+            panel.classList.toggle('hidden');
+        }
+
+        function updateStartDate(val) {
+            startDate = val;
+            localStorage.setItem('hp_quiz_startDate', val);
+            renderCards();
+        }
+
+        function updateCustomImage(val) {
+            if (val.trim() !== '') {
+                customImage = val.trim();
+                localStorage.setItem('hp_quiz_customImage', customImage);
+                document.getElementById('secretImage').src = customImage;
+            }
+        }
+
+        function unlockAllDev() {
+            completedQuizzes = CHARACTERS.map(c => c.id);
+            localStorage.setItem('hp_quiz_completed', JSON.stringify(completedQuizzes));
+            renderCards();
+            updatePuzzleGrid();
+        }
+
+        function resetProgress() {
+            completedQuizzes = [];
+            localStorage.removeItem('hp_quiz_completed');
+            renderCards();
+            updatePuzzleGrid();
+        }
+    </script>
+</body>
+</html>
